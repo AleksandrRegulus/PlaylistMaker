@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="medium_padding">16dp</dimen>
+    <dimen name="settings_text_size">16sp</dimen>
+    <dimen name="buttons_text_size">22sp</dimen>
+</resources>
