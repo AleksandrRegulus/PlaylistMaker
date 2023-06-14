@@ -12,8 +12,7 @@ class SettingsActivity : AppCompatActivity() {
         val btnBack = findViewById<ImageView>(R.id.btn_back)
 
         btnBack.setOnClickListener {
-            finish()            // как лучше??
-//            onBackPressed()   // этот вариант студия "зачеркивает", но исполняет
+            finish()
         }
     }
 }

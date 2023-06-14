@@ -7,7 +7,10 @@
     <dimen name="settings_buttons_height">60dp</dimen>
     <dimen name="settings_buttons_text_size">16sp</dimen>
     <dimen name="settings_image_view_size">16dp</dimen>
+    <dimen name="settings_buttons_radius">0dp</dimen>
+    <dimen name="settings_buttons_padding_zero">0dp</dimen>
 
+    <dimen name="buttons_inset_zero">0dp</dimen>
     <dimen name="icons_padding">10dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
 </resources>
