@@ -24,36 +24,36 @@
         android:layout_weight="1"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/white"
-        app:cornerRadius="10dp"
+        app:cornerRadius="@dimen/main_buttons_radius"
         android:insetTop= "0dp"
         android:insetBottom= "0dp"
         app:icon="@drawable/search"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/icons_padding"
         app:iconTint="@color/black"
         android:textAllCaps="false"
         android:text="@string/search"
         android:textColor="@color/black"
-        android:textSize="@dimen/buttons_text_size"/>
+        android:textSize="@dimen/main_buttons_text_size"/>
 
     <Button
         android:id="@+id/btn_media"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/main_buttons_margin_top"
         android:backgroundTint="@color/white"
-        app:cornerRadius="10dp"
+        app:cornerRadius="@dimen/main_buttons_radius"
         android:insetTop= "0dp"
         android:insetBottom= "0dp"
         app:icon="@drawable/media"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/icons_padding"
         app:iconTint="@color/black"
         android:textAllCaps="false"
         android:text="@string/media"
         android:textColor="@color/black"
-        android:textSize="@dimen/buttons_text_size">
+        android:textSize="@dimen/main_buttons_text_size">
     </Button>
 
     <Button
@@ -61,19 +61,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/main_buttons_margin_top"
         android:backgroundTint="@color/white"
-        app:cornerRadius="10dp"
+        app:cornerRadius="@dimen/main_buttons_radius"
         android:insetTop= "0dp"
         android:insetBottom= "0dp"
         app:icon="@drawable/settings"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/icons_padding"
         app:iconTint="@color/black"
         android:textAllCaps="false"
         android:text="@string/settings"
         android:textColor="@color/black"
-        android:textSize="@dimen/buttons_text_size" />
-
+        android:textSize="@dimen/main_buttons_text_size" />
 
 </LinearLayout>
