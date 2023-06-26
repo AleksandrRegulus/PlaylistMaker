@@ -1,9 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    android:clickable="true"
+    android:orientation="vertical" >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="24dp"
+        tools:ignore="RtlSymmetry,UseCompoundDrawables,UselessParent">
+
+        <ImageButton style="@style/ButtonBack"
+            android:id="@+id/btn_back" />
+
+        <TextView style="@style/HeaderTextView"
+            android:text="@string/search" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/medium_padding" >
+
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:drawableStart="@drawable/search_for_search_activity"
+            android:drawablePadding="9dp"
+            android:freezesText="true"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="30"
+            android:paddingStart="13dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text_size"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageButton
+            android:id="@+id/btn_clear"
+            android:layout_width="@dimen/button_clear_size"
+            android:layout_height="@dimen/button_clear_size"
+            android:layout_gravity="end"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/cross"
+            android:textSize="20sp"
+            android:visibility="invisible" />
+
+    </FrameLayout>
+
+
+
+</LinearLayout>
