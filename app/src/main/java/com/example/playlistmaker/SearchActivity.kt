@@ -7,30 +7,27 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {
 
-    var searchText = ""
+    private var searchText = ""
+    private lateinit var binding: ActivitySearchBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
-        val btnClear = findViewById<ImageButton>(R.id.btn_clear)
-        val searchEditText: EditText = findViewById<EditText>(R.id.search_edit_text)
-
-        btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             finish()
         }
 
-        btnClear.setOnClickListener {
-            searchEditText.setText("")
+        binding.btnClear.setOnClickListener {
+            binding.searchEditText.setText("")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+            inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -39,15 +36,15 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchText = searchEditText.text.toString()
-                btnClear.visibility = clearButtonVisibility(s)
+                searchText = binding.searchEditText.text.toString()
+                binding.btnClear.visibility = clearButtonVisibility(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // empty
             }
         }
-        searchEditText.addTextChangedListener(simpleTextWatcher)
+        binding.searchEditText.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -57,9 +54,7 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
-    companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT,searchText)
@@ -67,10 +62,12 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val searchEditText: EditText = findViewById<EditText>(R.id.search_edit_text)
 
         searchText = savedInstanceState.getString(SEARCH_TEXT,"")
-        searchEditText.setText(searchText)
+        binding.searchEditText.setText(searchText)
     }
-
+    companion object {
+        private const val SEARCH_TEXT = "SEARCH_TEXT"
+    }
 }
+

@@ -15,10 +15,17 @@
         android:paddingBottom="24dp"
         tools:ignore="RtlSymmetry,UseCompoundDrawables,UselessParent">
 
-        <ImageButton style="@style/ButtonBack"
+        <ImageButton
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/arrow_left"
             android:id="@+id/btn_back" />
 
         <TextView style="@style/HeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:text="@string/search" />
     </LinearLayout>
 

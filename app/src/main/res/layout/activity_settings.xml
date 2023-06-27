@@ -15,10 +15,17 @@
         android:orientation="horizontal"
         tools:ignore="RtlSymmetry,UseCompoundDrawables,UselessParent">
 
-        <ImageButton style="@style/ButtonBack"
+        <ImageButton
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/arrow_left"
             android:id="@+id/btn_back" />
 
         <TextView style="@style/HeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:text="@string/settings" />
     </LinearLayout>
 
@@ -41,18 +48,24 @@
 
         <Button
             android:id="@+id/btn_share_app"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_buttons_height"
             style="@style/SettingsButtonStyle"
             android:text="@string/share_app"
             app:icon="@drawable/share_app" />
 
         <Button
             android:id="@+id/btn_send_to_support"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_buttons_height"
             style="@style/SettingsButtonStyle"
             android:text="@string/write_support"
             app:icon="@drawable/support" />
 
         <Button
             android:id="@+id/btn_license_agreement"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_buttons_height"
             style="@style/SettingsButtonStyle"
             android:text="@string/user_agreement"
             app:icon="@drawable/bracket_right" />
