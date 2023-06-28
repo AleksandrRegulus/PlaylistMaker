@@ -2,15 +2,20 @@
 <resources>
     <dimen name="main_buttons_margin_top">16dp</dimen>
     <dimen name="main_buttons_radius">10dp</dimen>
-    <dimen name="main_buttons_text_size">22sp</dimen>
+    <dimen name="main_text_size">22sp</dimen>
 
     <dimen name="settings_buttons_height">60dp</dimen>
-    <dimen name="settings_buttons_text_size">16sp</dimen>
-    <dimen name="settings_image_view_size">16dp</dimen>
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="image_button_size">16dp</dimen>
     <dimen name="settings_buttons_radius">0dp</dimen>
     <dimen name="settings_buttons_padding_zero">0dp</dimen>
 
     <dimen name="buttons_inset_zero">0dp</dimen>
     <dimen name="icons_padding">10dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
+
+    <dimen name="search_edittext_radius">8dp</dimen>
+
+    <dimen name="button_clear_size">14dp</dimen>
+
 </resources>

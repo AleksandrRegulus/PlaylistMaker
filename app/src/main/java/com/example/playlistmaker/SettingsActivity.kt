@@ -1,18 +1,56 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySettingsBinding
+
+    @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
-
-        btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             finish()
         }
+
+        binding.btnShareApp.setOnClickListener {
+            Intent().apply {
+                val message = getString(R.string.share_link)
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, message)
+                type = "text/plain"
+                startActivity(Intent.createChooser(this, null))
+            }
+        }
+
+        binding.btnSendToSupport.setOnClickListener {
+            Intent().apply {
+                val message = getString(R.string.email_message)
+                action = Intent.ACTION_SENDTO
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.email_name)))
+                putExtra(Intent.EXTRA_TEXT, message)
+                type = "text/plain"
+                startActivity(Intent.createChooser(this, null))
+            }
+        }
+
+
+        binding.btnLicenseAgreement.setOnClickListener {
+            Intent().apply {
+                action = Intent.ACTION_VIEW
+                data = Uri.parse(getString(R.string.offer_link))
+                startActivity(this)
+            }
+        }
+
     }
 }
