@@ -19,6 +19,7 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = model.trackTime
+        val roundedCorner = 2f  // величина скругления углов картинки в dp
 
         Glide.with(itemView)
             .load(model.artworkUrl100)
@@ -28,7 +29,7 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 RoundedCorners(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        2f,
+                        roundedCorner,
                         itemView.resources.displayMetrics
                     ).toInt()
                 )
