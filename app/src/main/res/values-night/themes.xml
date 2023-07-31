@@ -20,7 +20,7 @@
     <style name="SearchTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
         <item name="colorPrimary">@color/black</item>       <!--системная часть экрана-->
         <item name="colorOnPrimary">@color/white</item>     <!--текст кнопок-->
-        <item name="colorPrimaryVariant">@color/black</item> <!-- для стрелочки и фона кнопок-->
+        <item name="colorPrimaryVariant">@color/white</item> <!-- для стрелочки и фона кнопок-->
         <item name="hintTextColor">@color/white</item>
         <item name="android:editTextColor">@color/black</item>
         <item name="android:background">@color/black</item>
@@ -36,6 +36,11 @@
         <item name="android:maxLines">1</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="PlaceholderButton" >
+        <item name="android:textColor">@color/black</item>
+        <item name="android:backgroundTint">@color/white</item>
     </style>
 
 </resources>

@@ -50,23 +50,22 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="76dp"
-                tools:text="The Beatles" />
-
+                tools:text="The Beatless" />
+<!--            -->
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="-76dp"
                 android:src="@drawable/ic_dot" />
-
+<!--            -->
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/ArtistTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="start"
-                android:minWidth="64dp"
                 tools:text="4:01" />
+
 
         </LinearLayout>
     </LinearLayout>

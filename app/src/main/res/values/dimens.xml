@@ -23,4 +23,6 @@
 
     <dimen name="placeholder_size">44dp</dimen>
 
+    <dimen name="placeholder_error_size">120dp</dimen>
+
 </resources>
