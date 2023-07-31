@@ -22,7 +22,7 @@
         <item name="android:insetTop">@dimen/buttons_inset_zero</item>
         <item name="android:insetBottom">@dimen/buttons_inset_zero</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size_middle</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:paddingStart">@dimen/settings_buttons_padding_zero</item>
         <item name="iconGravity">end</item>
