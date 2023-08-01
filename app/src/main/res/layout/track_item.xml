@@ -50,8 +50,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="76dp"
-                tools:text="The Beatless" />
-<!--            -->
+                tools:text="The Beatles" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
