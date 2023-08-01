@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class TracksAdapter(
-    private val songs: ArrayList<Track>
+    private val tracks: ArrayList<Track>
 ) : RecyclerView.Adapter<TracksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {
@@ -16,10 +16,10 @@ class TracksAdapter(
     }
 
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
-        holder.bind(songs[position])
+        holder.bind(tracks[position])
     }
 
-    override fun getItemCount() = songs.size
+    override fun getItemCount() = tracks.size
 
 
 }

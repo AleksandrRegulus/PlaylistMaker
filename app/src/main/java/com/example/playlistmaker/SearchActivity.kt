@@ -99,7 +99,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchText = savedInstanceState.getString(SEARCH_TEXT, "")
         binding.searchEditText.setText(searchText)
-        if (searchText != "") search()
+        if (searchText.isNotEmpty()) search()
     }
 
     private fun showMessage(text: String, noInternet: Boolean) {
