@@ -26,13 +26,54 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesService = retrofit.create(ItunesApi::class.java)
     private val tracks = ArrayList<Track>()
-    private val adapter = TracksAdapter(tracks)
+    private var historyTracks = ArrayList<Track>()
 
+    private lateinit var adapter: TracksAdapter
+
+    private lateinit var historyAdapter: TracksAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+
+        // инициализируем класс для работы с SharedPreferences
+        val searchHistory = SearchHistory(sharedPrefs)
+        // подгружаем список "Вы искали"
+        historyTracks = searchHistory.readHistory()
+
+        // завешиваем адаптер для списка "Вы искали" с пустым клик листнером т.к. действия сним пока не нужны
+        val onHistoryTrackClickListener = object : TracksAdapter.OnItemClickListener {
+            override fun onItemClick(track: Track) {}
+        }
+        historyAdapter = TracksAdapter(historyTracks, onHistoryTrackClickListener)
+
+        // завешиваем адаптер для основного списка поиска с листнером
+        val onTrackClickListener = object : TracksAdapter.OnItemClickListener {
+            override fun onItemClick(track: Track) {
+                val readTracks = searchHistory.readHistory()
+                val position = readTracks.indexOf(track)
+                if (position == -1) {
+                    if (readTracks.size == MAX_TRACKS_IN_HISTORY) readTracks.removeLast()
+                } else {
+                    readTracks.removeAt(position)
+                }
+                readTracks.add(0, element = track)
+                searchHistory.saveHistory(readTracks)
+            }
+        }
+        adapter = TracksAdapter(tracks, onTrackClickListener)
+
+        // подписываемся на изменения списка "Вы искали" в SharedPreference
+        sharedPrefs.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == SEARCH_HISTORY) {
+                historyTracks.clear()
+                historyTracks.addAll(searchHistory.readHistory())
+                historyAdapter.notifyDataSetChanged()
+            }
+        }
 
         binding.btnBack.setOnClickListener {
             finish()
@@ -46,10 +87,17 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             adapter.notifyDataSetChanged()
             binding.errorPlaceholder.visibility = View.GONE
+            binding.searchResult.visibility = View.VISIBLE
         }
 
         binding.btnRenewPlaceholder.setOnClickListener {
             search()
+        }
+
+        binding.btnClearHistory.setOnClickListener {
+            historyTracks.clear()
+            searchHistory.saveHistory(historyTracks)
+            showHistoryElements(View.GONE)
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -62,6 +110,7 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+        // обрабатываем изменение текста в строке поиска
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -70,6 +119,9 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchText = binding.searchEditText.text.toString()
                 binding.btnClear.visibility = clearButtonVisibility(s)
+//                binding.searchEditText.hasFocus() &&
+                val visibility = if (s?.isEmpty() == true) View.VISIBLE else View.GONE
+                showHistoryElements(visibility)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -78,7 +130,15 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.searchEditText.addTextChangedListener(simpleTextWatcher)
 
-        binding.recyclerView.adapter = adapter
+        // обрабатываем состояние фокуса строки поиска
+        binding.searchEditText.setOnFocusChangeListener { view, hasFocus ->
+            val visibility =
+                if (hasFocus && binding.searchEditText.text.isEmpty()) View.VISIBLE else View.GONE
+            showHistoryElements(visibility)
+        }
+
+        // делаем фокус на строку поиска
+        binding.searchEditText.requestFocus()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -106,6 +166,7 @@ class SearchActivity : AppCompatActivity() {
         if (text.isNotEmpty()) {
             tracks.clear()
             adapter.notifyDataSetChanged()
+            binding.searchResult.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.VISIBLE
             binding.textPlaceholder.text = text
             if (noInternet) {
@@ -117,6 +178,7 @@ class SearchActivity : AppCompatActivity() {
             }
         } else {
             binding.errorPlaceholder.visibility = View.GONE
+            binding.searchResult.visibility = View.VISIBLE
         }
     }
 
@@ -152,9 +214,24 @@ class SearchActivity : AppCompatActivity() {
             })
     }
 
+    private fun showHistoryElements(visibility: Int) {
+        if (visibility == View.VISIBLE && historyTracks.isNotEmpty()) {
+            binding.historyHeader.visibility = View.VISIBLE
+            binding.btnClearHistory.visibility = View.VISIBLE
+            binding.recyclerView.adapter = historyAdapter
+        } else {
+            binding.historyHeader.visibility = View.GONE
+            binding.btnClearHistory.visibility = View.GONE
+            binding.recyclerView.adapter = adapter
+        }
+
+
+    }
+
     companion object {
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val ITUNES_BASE_URL = "https://itunes.apple.com"
+        private const val MAX_TRACKS_IN_HISTORY = 10
     }
 }
 

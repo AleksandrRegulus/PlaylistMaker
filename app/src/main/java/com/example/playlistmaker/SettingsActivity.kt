@@ -17,6 +17,10 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+        val app = (applicationContext as App)
+        if (app.darkTheme) binding.switchNightMode.isChecked = true
+
         binding.btnBack.setOnClickListener {
             finish()
         }
@@ -50,6 +54,14 @@ class SettingsActivity : AppCompatActivity() {
                 data = Uri.parse(getString(R.string.offer_link))
                 startActivity(this)
             }
+        }
+
+        binding.switchNightMode.setOnCheckedChangeListener { switcher, checked ->
+            app.darkTheme = checked
+            sharedPrefs.edit()
+                .putBoolean(DARK_THEME, checked)
+                .apply()
+            app.switchTheme(checked)
         }
 
     }

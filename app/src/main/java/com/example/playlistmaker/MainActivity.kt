@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.playlistmaker.databinding.ActivityMainBinding
 
+const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
+const val DARK_THEME = "dark_theme"
+const val SEARCH_HISTORY = "search_history"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -16,8 +19,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+
+        val app = (applicationContext as App)
+        app.darkTheme = sharedPrefs.getBoolean(DARK_THEME, false)
+        app.switchTheme(app.darkTheme)
+
         binding.btnSearch.setOnClickListener {
-//            Toast.makeText(this@MainActivity, "Нажали на кнопку поиска!", Toast.LENGTH_SHORT).show()
             val displayIntent = Intent(this, SearchActivity::class.java)
             startActivity(displayIntent)
         }
@@ -28,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnSettings.setOnClickListener {
-//            Toast.makeText(this@MainAc    tivity, "Нажали на кнопку настроек!", Toast.LENGTH_SHORT).show()
             val displayIntent = Intent(this, SettingsActivity::class.java)
             startActivity(displayIntent)
         }

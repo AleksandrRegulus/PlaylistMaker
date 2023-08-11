@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/SettingsTheme.Theme.PlaylistMaker">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,20 +38,23 @@
         android:paddingHorizontal="@dimen/medium_padding"
         android:paddingTop="40dp">
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <androidx.appcompat.widget.SwitchCompat
+            style="@style/DarkThemeSwitchTextColor"
             android:id="@+id/switch_night_mode"
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttons_height"
             android:fontFamily="@font/ys_display_regular"
             android:text="@string/dark_theme"
             android:textFontWeight="400"
-            android:textSize="@dimen/text_size_middle"  />
+            android:textSize="@dimen/text_size_middle"
+            android:theme="@style/DarkThemeSwitchChekedColor" />
 
         <Button
             android:id="@+id/btn_share_app"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttons_height"
+
             android:text="@string/share_app"
             app:icon="@drawable/share_app" />
 

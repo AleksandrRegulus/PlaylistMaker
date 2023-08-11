@@ -19,7 +19,7 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(model: Track) {
         trackName.text = model.trackName
-        artistName.text = model.artistName
+        artistName.text = model.artistName.trim()
 
         val trackTimeInMiliseconds = model.trackTime.toLongOrNull()
         if (trackTimeInMiliseconds != null) {

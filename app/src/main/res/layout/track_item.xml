@@ -6,6 +6,7 @@
     android:layout_height="@dimen/buttons_height"
     android:gravity="start"
     android:orientation="horizontal"
+    android:clickable="true"
     android:paddingHorizontal="@dimen/small_padding">
 
     <ImageView
@@ -37,7 +38,7 @@
             android:textSize="@dimen/text_size_middle" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:orientation="horizontal"
@@ -47,23 +48,23 @@
                 android:id="@+id/artistName"
                 style="@style/ArtistTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="76dp"
-                tools:text="The Beatless" />
-<!--            -->
+                tools:text="The Beatless"
+                tools:ignore="InefficientWeight" />
+
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="-76dp"
                 android:src="@drawable/ic_dot" />
-<!--            -->
+
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/ArtistTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 tools:text="4:01" />
 
 
