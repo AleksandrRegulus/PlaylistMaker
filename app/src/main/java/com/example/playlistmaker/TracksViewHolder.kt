@@ -21,7 +21,7 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         trackName.text = model.trackName
         artistName.text = model.artistName.trim()
 
-        val trackTimeInMiliseconds = model.trackTime.toLongOrNull()
+      val trackTimeInMiliseconds = model.trackTime.toLongOrNull()
         if (trackTimeInMiliseconds != null) {
             trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeInMiliseconds)
         } else trackTime.text = "0:00"  // если длина трека отсутствует показать нули
