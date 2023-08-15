@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -32,6 +33,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var historyAdapter: TracksAdapter
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -44,24 +46,18 @@ class SearchActivity : AppCompatActivity() {
         // подгружаем список "Вы искали"
         historyTracks = searchHistory.readHistory()
 
-        // завешиваем адаптер для списка "Вы искали" с пустым клик листнером т.к. действия сним пока не нужны
+        // завешиваем адаптер для списка "Вы искали" с листнером (пока таким же как основной)
         val onHistoryTrackClickListener = object : TracksAdapter.OnItemClickListener {
-            override fun onItemClick(track: Track) {}
+            override fun onItemClick(track: Track) {
+                searchHistory.addTrackToHistoy(track)
+            }
         }
         historyAdapter = TracksAdapter(historyTracks, onHistoryTrackClickListener)
 
         // завешиваем адаптер для основного списка поиска с листнером
         val onTrackClickListener = object : TracksAdapter.OnItemClickListener {
             override fun onItemClick(track: Track) {
-                val readTracks = searchHistory.readHistory()
-                val position = readTracks.indexOf(track)
-                if (position == -1) {
-                    if (readTracks.size == MAX_TRACKS_IN_HISTORY) readTracks.removeLast()
-                } else {
-                    readTracks.removeAt(position)
-                }
-                readTracks.add(0, element = track)
-                searchHistory.saveHistory(readTracks)
+                searchHistory.addTrackToHistoy(track)
             }
         }
         adapter = TracksAdapter(tracks, onTrackClickListener)
@@ -119,7 +115,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchText = binding.searchEditText.text.toString()
                 binding.btnClear.visibility = clearButtonVisibility(s)
-//                binding.searchEditText.hasFocus() &&
                 val visibility = if (s?.isEmpty() == true) View.VISIBLE else View.GONE
                 showHistoryElements(visibility)
             }
@@ -162,6 +157,7 @@ class SearchActivity : AppCompatActivity() {
         if (searchText.isNotEmpty()) search()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showMessage(text: String, noInternet: Boolean) {
         if (text.isNotEmpty()) {
             tracks.clear()
@@ -185,6 +181,7 @@ class SearchActivity : AppCompatActivity() {
     private fun search() {
         itunesService.findSongs(binding.searchEditText.text.toString())
             .enqueue(object : Callback<TracksResponse> {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<TracksResponse>,
                     response: Response<TracksResponse>
@@ -231,7 +228,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val ITUNES_BASE_URL = "https://itunes.apple.com"
-        private const val MAX_TRACKS_IN_HISTORY = 10
     }
 }
 

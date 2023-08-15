@@ -72,7 +72,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/buttons_height"
             android:text="@string/user_agreement"
-            app:icon="@drawable/bracket_right" />
+            app:icon="@drawable/arrow_forward"
+            app:iconSize="24dp"
+             />
 
     </LinearLayout>
 
