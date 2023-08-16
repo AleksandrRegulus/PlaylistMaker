@@ -76,7 +76,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.btnClear.setOnClickListener {
-            binding.searchEditText.setText("")
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
 
@@ -84,6 +83,7 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             binding.errorPlaceholder.visibility = View.GONE
             binding.searchResult.visibility = View.VISIBLE
+            binding.searchEditText.setText("")
         }
 
         binding.btnRenewPlaceholder.setOnClickListener {
