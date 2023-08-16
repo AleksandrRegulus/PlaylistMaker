@@ -13,7 +13,7 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
         return result
     }
 
-    fun addTrackToHistoy (track: Track) {
+    fun addTrackToHistory (track: Track) {
         val readTracks = readHistory()
         val position = readTracks.indexOf(track)
         if (position == -1) {

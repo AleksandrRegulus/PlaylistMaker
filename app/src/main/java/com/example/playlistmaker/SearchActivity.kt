@@ -49,7 +49,7 @@ class SearchActivity : AppCompatActivity() {
         // завешиваем адаптер для списка "Вы искали" с листнером (пока таким же как основной)
         val onHistoryTrackClickListener = object : TracksAdapter.OnItemClickListener {
             override fun onItemClick(track: Track) {
-                searchHistory.addTrackToHistoy(track)
+                searchHistory.addTrackToHistory(track)
             }
         }
         historyAdapter = TracksAdapter(historyTracks, onHistoryTrackClickListener)
@@ -57,7 +57,7 @@ class SearchActivity : AppCompatActivity() {
         // завешиваем адаптер для основного списка поиска с листнером
         val onTrackClickListener = object : TracksAdapter.OnItemClickListener {
             override fun onItemClick(track: Track) {
-                searchHistory.addTrackToHistoy(track)
+                searchHistory.addTrackToHistory(track)
             }
         }
         adapter = TracksAdapter(tracks, onTrackClickListener)
@@ -115,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchText = binding.searchEditText.text.toString()
                 binding.btnClear.visibility = clearButtonVisibility(s)
+
                 val visibility = if (s?.isEmpty() == true) View.VISIBLE else View.GONE
                 showHistoryElements(visibility)
             }
@@ -132,8 +133,6 @@ class SearchActivity : AppCompatActivity() {
             showHistoryElements(visibility)
         }
 
-        // делаем фокус на строку поиска
-        binding.searchEditText.requestFocus()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
