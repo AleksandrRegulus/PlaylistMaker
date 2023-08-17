@@ -49,7 +49,8 @@ class SearchActivity : AppCompatActivity() {
         // завешиваем адаптер для списка "Вы искали" с листнером (пока таким же как основной)
         val onHistoryTrackClickListener = object : TracksAdapter.OnItemClickListener {
             override fun onItemClick(track: Track) {
-                searchHistory.addTrackToHistory(track)
+                searchHistory.addTrackToHistory(track, historyTracks)
+                historyAdapter.notifyDataSetChanged()
             }
         }
         historyAdapter = TracksAdapter(historyTracks, onHistoryTrackClickListener)
@@ -57,19 +58,10 @@ class SearchActivity : AppCompatActivity() {
         // завешиваем адаптер для основного списка поиска с листнером
         val onTrackClickListener = object : TracksAdapter.OnItemClickListener {
             override fun onItemClick(track: Track) {
-                searchHistory.addTrackToHistory(track)
+                searchHistory.addTrackToHistory(track, historyTracks)
             }
         }
         adapter = TracksAdapter(tracks, onTrackClickListener)
-
-        // подписываемся на изменения списка "Вы искали" в SharedPreference
-        sharedPrefs.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
-            if (key == SEARCH_HISTORY) {
-                historyTracks.clear()
-                historyTracks.addAll(searchHistory.readHistory())
-                historyAdapter.notifyDataSetChanged()
-            }
-        }
 
         binding.btnBack.setOnClickListener {
             finish()
@@ -79,13 +71,12 @@ class SearchActivity : AppCompatActivity() {
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
 
-            tracks.clear()
-            adapter.notifyDataSetChanged()
             binding.errorPlaceholder.visibility = View.GONE
             binding.searchResult.visibility = View.VISIBLE
             binding.searchEditText.setText("")
         }
 
+        // кнопка Обновить при проблемах со связью
         binding.btnRenewPlaceholder.setOnClickListener {
             search()
         }
@@ -116,6 +107,13 @@ class SearchActivity : AppCompatActivity() {
                 searchText = binding.searchEditText.text.toString()
                 binding.btnClear.visibility = clearButtonVisibility(s)
 
+                // если пользователь очистил поисковый запрос очищаем результат поиска
+                if (s?.isEmpty() == true) {
+                    tracks.clear()
+                    adapter.notifyDataSetChanged()
+                }
+
+                // если пользователь очистил поисковый показываем историю поиска
                 val visibility = if (s?.isEmpty() == true) View.VISIBLE else View.GONE
                 showHistoryElements(visibility)
             }
@@ -210,11 +208,13 @@ class SearchActivity : AppCompatActivity() {
             })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showHistoryElements(visibility: Int) {
         if (visibility == View.VISIBLE && historyTracks.isNotEmpty()) {
             binding.historyHeader.visibility = View.VISIBLE
             binding.btnClearHistory.visibility = View.VISIBLE
             binding.recyclerView.adapter = historyAdapter
+            historyAdapter.notifyDataSetChanged()
         } else {
             binding.historyHeader.visibility = View.GONE
             binding.btnClearHistory.visibility = View.GONE

@@ -13,16 +13,16 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
         return result
     }
 
-    fun addTrackToHistory (track: Track) {
-        val readTracks = readHistory()
-        val position = readTracks.indexOf(track)
+    fun addTrackToHistory (track: Track, historyTracks: ArrayList<Track>): ArrayList<Track> {
+        val position = historyTracks.indexOf(track)
         if (position == -1) {
-            if (readTracks.size == MAX_TRACKS_IN_HISTORY) readTracks.removeLast()
+            if (historyTracks.size == MAX_TRACKS_IN_HISTORY) historyTracks.removeLast()
         } else {
-            readTracks.removeAt(position)
+            historyTracks.removeAt(position)
         }
-        readTracks.add(0, element = track)
-        saveHistory(readTracks)
+        historyTracks.add(0, element = track)
+        saveHistory(historyTracks)
+        return historyTracks
     }
 
     // запись
