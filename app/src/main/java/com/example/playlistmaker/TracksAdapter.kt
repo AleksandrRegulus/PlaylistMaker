@@ -1,6 +1,8 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
@@ -25,7 +27,7 @@ class TracksAdapter(
 
     override fun getItemCount() = tracks.size
 
-    interface OnItemClickListener {
+    fun interface OnItemClickListener {
         fun onItemClick(track: Track)
     }
 }

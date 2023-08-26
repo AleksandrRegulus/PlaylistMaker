@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -47,20 +48,26 @@ class SearchActivity : AppCompatActivity() {
         historyTracks = searchHistory.readHistory()
 
         // завешиваем адаптер для списка "Вы искали" с листнером (пока таким же как основной)
-        val onHistoryTrackClickListener = object : TracksAdapter.OnItemClickListener {
-            override fun onItemClick(track: Track) {
+        val onHistoryTrackClickListener =
+            TracksAdapter.OnItemClickListener { track ->
                 searchHistory.addTrackToHistory(track, historyTracks)
                 historyAdapter.notifyDataSetChanged()
+
+                val displayIntent = Intent(this, PlayerActivity::class.java)
+                displayIntent.putExtra("track", track)
+                startActivity(displayIntent)
             }
-        }
         historyAdapter = TracksAdapter(historyTracks, onHistoryTrackClickListener)
 
         // завешиваем адаптер для основного списка поиска с листнером
-        val onTrackClickListener = object : TracksAdapter.OnItemClickListener {
-            override fun onItemClick(track: Track) {
+        val onTrackClickListener =
+            TracksAdapter.OnItemClickListener { track ->
                 searchHistory.addTrackToHistory(track, historyTracks)
+
+                val displayIntent = Intent(this, PlayerActivity::class.java)
+                displayIntent.putExtra("track", track)
+                startActivity(displayIntent)
             }
-        }
         adapter = TracksAdapter(tracks, onTrackClickListener)
 
         binding.btnBack.setOnClickListener {

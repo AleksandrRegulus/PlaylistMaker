@@ -22,6 +22,10 @@
             android:name=".MediaActivity"
             android:exported="false" />
         <activity
+            android:name=".PlayerActivity"
+            android:exported="false"
+            android:theme="@style/PlayerTheme.Theme.PlaylistMaker"/>
+        <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:theme="@style/SettingsTheme.Theme.PlaylistMaker"/>
