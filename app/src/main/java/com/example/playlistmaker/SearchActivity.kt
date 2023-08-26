@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -26,30 +27,64 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesService = retrofit.create(ItunesApi::class.java)
     private val tracks = ArrayList<Track>()
-    private val adapter = TracksAdapter(tracks)
+    private var historyTracks = ArrayList<Track>()
 
+    private lateinit var adapter: TracksAdapter
 
+    private lateinit var historyAdapter: TracksAdapter
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+
+        // инициализируем класс для работы с SharedPreferences
+        val searchHistory = SearchHistory(sharedPrefs)
+        // подгружаем список "Вы искали"
+        historyTracks = searchHistory.readHistory()
+
+        // завешиваем адаптер для списка "Вы искали" с листнером (пока таким же как основной)
+        val onHistoryTrackClickListener = object : TracksAdapter.OnItemClickListener {
+            override fun onItemClick(track: Track) {
+                searchHistory.addTrackToHistory(track, historyTracks)
+                historyAdapter.notifyDataSetChanged()
+            }
+        }
+        historyAdapter = TracksAdapter(historyTracks, onHistoryTrackClickListener)
+
+        // завешиваем адаптер для основного списка поиска с листнером
+        val onTrackClickListener = object : TracksAdapter.OnItemClickListener {
+            override fun onItemClick(track: Track) {
+                searchHistory.addTrackToHistory(track, historyTracks)
+            }
+        }
+        adapter = TracksAdapter(tracks, onTrackClickListener)
 
         binding.btnBack.setOnClickListener {
             finish()
         }
 
         binding.btnClear.setOnClickListener {
-            binding.searchEditText.setText("")
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
 
-            tracks.clear()
-            adapter.notifyDataSetChanged()
             binding.errorPlaceholder.visibility = View.GONE
+            binding.searchResult.visibility = View.VISIBLE
+            binding.searchEditText.setText("")
         }
 
+        // кнопка Обновить при проблемах со связью
         binding.btnRenewPlaceholder.setOnClickListener {
             search()
+        }
+
+        binding.btnClearHistory.setOnClickListener {
+            historyTracks.clear()
+            searchHistory.saveHistory(historyTracks)
+            showHistoryElements(View.GONE)
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -62,6 +97,7 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+        // обрабатываем изменение текста в строке поиска
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -70,6 +106,16 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchText = binding.searchEditText.text.toString()
                 binding.btnClear.visibility = clearButtonVisibility(s)
+
+                // если пользователь очистил поисковый запрос очищаем результат поиска
+                if (s?.isEmpty() == true) {
+                    tracks.clear()
+                    adapter.notifyDataSetChanged()
+                }
+
+                // если пользователь очистил поисковый показываем историю поиска
+                val visibility = if (s?.isEmpty() == true) View.VISIBLE else View.GONE
+                showHistoryElements(visibility)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -78,7 +124,13 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.searchEditText.addTextChangedListener(simpleTextWatcher)
 
-        binding.recyclerView.adapter = adapter
+        // обрабатываем состояние фокуса строки поиска
+        binding.searchEditText.setOnFocusChangeListener { view, hasFocus ->
+            val visibility =
+                if (hasFocus && binding.searchEditText.text.isEmpty()) View.VISIBLE else View.GONE
+            showHistoryElements(visibility)
+        }
+
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -102,10 +154,12 @@ class SearchActivity : AppCompatActivity() {
         if (searchText.isNotEmpty()) search()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showMessage(text: String, noInternet: Boolean) {
         if (text.isNotEmpty()) {
             tracks.clear()
             adapter.notifyDataSetChanged()
+            binding.searchResult.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.VISIBLE
             binding.textPlaceholder.text = text
             if (noInternet) {
@@ -117,12 +171,14 @@ class SearchActivity : AppCompatActivity() {
             }
         } else {
             binding.errorPlaceholder.visibility = View.GONE
+            binding.searchResult.visibility = View.VISIBLE
         }
     }
 
     private fun search() {
         itunesService.findSongs(binding.searchEditText.text.toString())
             .enqueue(object : Callback<TracksResponse> {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<TracksResponse>,
                     response: Response<TracksResponse>
@@ -150,6 +206,22 @@ class SearchActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showHistoryElements(visibility: Int) {
+        if (visibility == View.VISIBLE && historyTracks.isNotEmpty()) {
+            binding.historyHeader.visibility = View.VISIBLE
+            binding.btnClearHistory.visibility = View.VISIBLE
+            binding.recyclerView.adapter = historyAdapter
+            historyAdapter.notifyDataSetChanged()
+        } else {
+            binding.historyHeader.visibility = View.GONE
+            binding.btnClearHistory.visibility = View.GONE
+            binding.recyclerView.adapter = adapter
+        }
+
+
     }
 
     companion object {

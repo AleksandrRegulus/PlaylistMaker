@@ -5,6 +5,7 @@
     <dimen name="main_text_size">22sp</dimen>
 
     <dimen name="buttons_height">60dp</dimen>
+    <dimen name="text_size_big">19sp</dimen>
     <dimen name="text_size_middle">16sp</dimen>
     <dimen name="text_size_small">11sp</dimen>
     <dimen name="image_button_size">16dp</dimen>
