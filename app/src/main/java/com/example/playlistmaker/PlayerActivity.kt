@@ -11,7 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import java.io.Serializable
 
-private const val DEFAULT_TIME_STRING = "0:00"
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
@@ -32,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
             binding.artistName.text = track.artistName
             binding.trackName.text = track.trackName
             binding.trackTime.text = track.getTimeFromMillis()
+            binding.playingTime.text = DEFAULT_TIME_STRING
 
             if (track.album.isNullOrEmpty()) {
                 binding.albumName.visibility = View.GONE
@@ -83,5 +83,9 @@ class PlayerActivity : AppCompatActivity() {
         )
 
         else -> @Suppress("DEPRECATION") getSerializableExtra(key) as? T
+    }
+
+    companion object {
+        private const val DEFAULT_TIME_STRING = "0:00"
     }
 }

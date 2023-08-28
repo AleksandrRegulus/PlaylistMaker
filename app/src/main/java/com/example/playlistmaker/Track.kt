@@ -5,8 +5,6 @@ import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-private const val DEFAULT_TIME_STRING = "0:00"
-
 data class Track(    // nullable отмечены только те поля, которые далее обрабатывем. Простое присвоение null вьюхам ошибки не вызывает
     val trackId: Int,
     val trackName: String, // Название композиции
@@ -28,10 +26,18 @@ data class Track(    // nullable отмечены только те поля, к
     fun getYearFromReleaseDate() =
         if (releaseDate.isNullOrEmpty()) "" else releaseDate.substring(0..3)
 
+    val timeFormat: String by lazy {   // что не так здесь? Получаю Null Pointer Exception
+        getTimeFromMillis()
+    }
+
     fun getTimeFromMillis(): String {
         val trackTimeInMilliseconds = trackTimeMillis.toLongOrNull()
         return if (trackTimeInMilliseconds != null) {
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeInMilliseconds)
         } else DEFAULT_TIME_STRING
+    }
+
+    companion object {
+        private const val DEFAULT_TIME_STRING = "0:00"
     }
 }
