@@ -20,7 +20,7 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(model: Track) {
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text = model.getTimeFromMillis()
+        trackTime.text = FormatTrack.getTimeFromMillis(model.trackTimeMillis)
 
         val roundedCorner = 2f  // величина скругления углов картинки в dp
 
@@ -39,5 +39,7 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
             )
             .into(poster)
     }
+
+
 
 }

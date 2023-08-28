@@ -30,8 +30,8 @@ class PlayerActivity : AppCompatActivity() {
         if (track != null) {
             binding.artistName.text = track.artistName
             binding.trackName.text = track.trackName
-            binding.trackTime.text = track.getTimeFromMillis()
-            binding.playingTime.text = DEFAULT_TIME_STRING
+            binding.trackTime.text = FormatTrack.getTimeFromMillis(track.trackTimeMillis)
+            binding.playingTime.text = FormatTrack.DEFAULT_TIME_STRING
 
             if (track.album.isNullOrEmpty()) {
                 binding.albumName.visibility = View.GONE
@@ -48,7 +48,7 @@ class PlayerActivity : AppCompatActivity() {
             } else {
                 binding.yearName.visibility = View.VISIBLE
                 binding.year.visibility = View.VISIBLE
-                binding.yearName.text = track.getYearFromReleaseDate()
+                binding.yearName.text = FormatTrack.getYearFromReleaseDate(track.releaseDate)
             }
 
             binding.genreName.text = track.genre
@@ -57,7 +57,7 @@ class PlayerActivity : AppCompatActivity() {
             val roundedCorner = 8f  // величина скругления углов картинки в dp
 
             Glide.with(this)
-                .load(track.getCoverArtwork())
+                .load(FormatTrack.getCoverArtwork(track.artworkUrl100))
                 .placeholder(R.drawable.track_placeholder_big)
                 .fitCenter()
                 .transform(
@@ -85,7 +85,4 @@ class PlayerActivity : AppCompatActivity() {
         else -> @Suppress("DEPRECATION") getSerializableExtra(key) as? T
     }
 
-    companion object {
-        private const val DEFAULT_TIME_STRING = "0:00"
-    }
 }

@@ -8,7 +8,6 @@ import com.example.playlistmaker.databinding.ActivityMainBinding
 
 const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
 const val DARK_THEME = "dark_theme"
-const val SEARCH_HISTORY = "search_history"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -40,4 +39,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(displayIntent)
         }
     }
+
 }
