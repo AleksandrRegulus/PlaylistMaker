@@ -3,10 +3,9 @@ package com.example.playlistmaker
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class FormatTrack {
-    companion object {
+object FormatTrack  {
 
-        const val DEFAULT_TIME_STRING = "0:00"
+        const val DEFAULT_TIME_STRING = "00:00"
 
         fun getTimeFromMillis(trackTimeMillis: String): String {
             val trackTimeInMilliseconds = trackTimeMillis.toLongOrNull()
@@ -24,4 +23,3 @@ class FormatTrack {
         fun getYearFromReleaseDate(releaseDate: String?) =
             if (releaseDate.isNullOrEmpty()) "" else releaseDate.substring(0..3)
     }
-}

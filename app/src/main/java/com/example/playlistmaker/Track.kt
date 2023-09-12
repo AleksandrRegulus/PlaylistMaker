@@ -12,5 +12,6 @@ data class Track(    // nullable отмечены только те поля, к
     val trackTimeMillis: String, // Продолжительность трека
     val artworkUrl100: String,   // ссылка на постер 100х100
     @SerializedName("primaryGenreName") val genre: String, //жанр
-    val country: String  // страна
+    val country: String,  // страна
+    val previewUrl : String?,  //ссылка на отрывок трека
 ) : Serializable
