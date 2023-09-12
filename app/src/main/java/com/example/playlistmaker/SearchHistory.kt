@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 
 private const val MAX_TRACKS_IN_HISTORY = 10
-class SearchHistory(val sharedPrefs: SharedPreferences) {
+class SearchHistory(private val sharedPrefs: SharedPreferences) {
     // чтение
     fun readHistory(): ArrayList<Track> {
         val json = sharedPrefs.getString(SEARCH_HISTORY, null) ?: return ArrayList()
@@ -31,5 +31,9 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
             sharedPrefs.edit()
                 .putString(SEARCH_HISTORY, json)
                 .apply()
+    }
+
+    companion object {
+        private const val SEARCH_HISTORY = "search_history"
     }
 }

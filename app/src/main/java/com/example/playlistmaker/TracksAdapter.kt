@@ -25,7 +25,7 @@ class TracksAdapter(
 
     override fun getItemCount() = tracks.size
 
-    interface OnItemClickListener {
+    fun interface OnItemClickListener {
         fun onItemClick(track: Track)
     }
 }

@@ -24,6 +24,16 @@
 
     </style>
 
+    <style name="PlayerTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="color_player_btn">@color/btn_player_light_grey</item>
+        <item name="color_btn_play">@color/black</item>
+
+    </style>
+
+
+
     <style name="SettingsButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="iconTint">@color/grey</item>
         <item name="cornerRadius">@dimen/settings_buttons_radius</item>
@@ -65,7 +75,7 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="DarkThemeSwitchChekedColor" parent="Theme.AppCompat.Light">
+    <style name="DarkThemeSwitchCheckedColor" parent="Theme.AppCompat.Light">
         <!-- inactive track color (30% transparency) -->
         <item name="android:trackTint">@color/grey
         </item>
