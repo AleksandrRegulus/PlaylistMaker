@@ -8,7 +8,8 @@
     <dimen name="text_size_big">19sp</dimen>
     <dimen name="text_size_middle">16sp</dimen>
     <dimen name="text_size_small">11sp</dimen>
-    <dimen name="image_button_size">16dp</dimen>
+    <dimen name="image_button_size">48dp</dimen>
+    <dimen name="padding_header">4dp</dimen>
     <dimen name="settings_buttons_radius">0dp</dimen>
     <dimen name="settings_buttons_padding_zero">0dp</dimen>
 
