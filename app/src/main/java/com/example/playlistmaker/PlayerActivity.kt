@@ -20,13 +20,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
 
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val DELAY_MILLIS = 300L
-    }
+
 
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
@@ -51,7 +45,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val track = intent.serializable<Track>("track")
+        val track = intent.serializable<Track>(PUT_EXTRA_TAG)
 
         if (track != null) {
             binding.artistName.text = track.artistName
@@ -114,6 +108,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        handler.removeCallbacks(timerRunnable)
         mediaPlayer.release()
     }
 
@@ -134,6 +129,7 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         binding.btnPlay.setImageResource(R.drawable.ic_pause)
         playerState = STATE_PLAYING
+        handler.removeCallbacks(timerRunnable)
         handler.post(timerRunnable)
     }
 
@@ -164,6 +160,15 @@ class PlayerActivity : AppCompatActivity() {
         )
 
         else -> @Suppress("DEPRECATION") getSerializableExtra(key) as? T
+    }
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val DELAY_MILLIS = 300L
+        private const val PUT_EXTRA_TAG = "track"
     }
 
 }
