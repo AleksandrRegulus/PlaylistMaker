@@ -1,14 +1,18 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.settings
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.playlistmaker.ui.main.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
 
+    private val saveThemeUseCase = Creator.provideSaveThemeToSharedPrefsUseCase(this)
     private lateinit var binding: ActivitySettingsBinding
 
     @SuppressLint("IntentReset")
@@ -17,7 +21,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
         val app = (applicationContext as App)
         if (app.darkTheme) binding.switchNightMode.isChecked = true
 
@@ -58,11 +61,10 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.switchNightMode.setOnCheckedChangeListener { switcher, checked ->
             app.darkTheme = checked
-            sharedPrefs.edit()
-                .putBoolean(DARK_THEME, checked)
-                .apply()
+            saveThemeUseCase.execute(checked)
             app.switchTheme(checked)
         }
 
     }
+
 }
