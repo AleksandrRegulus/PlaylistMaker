@@ -1,39 +1,58 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.player
 
+import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.TypedValue
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.domain.model.Track
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
+    private val playerInteractor = Creator.providePlayerInteractor()
+
     private lateinit var binding: ActivityPlayerBinding
 
-
-
     private var playerState = STATE_DEFAULT
-    private var mediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
 
     private val timerRunnable = object : Runnable {
         override fun run() {
             binding.playingTime.text =
-                SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                SimpleDateFormat(
+                    "mm:ss",
+                    Locale.getDefault()
+                ).format(playerInteractor.getCurrentPosition())
             handler.postDelayed(this, DELAY_MILLIS)
         }
     }
 
+    private val getStateRunnable = object : Runnable {
+        override fun run() {
+            playerState = playerInteractor.getState()
+            when (playerState) {
+                STATE_PLAYING, STATE_DEFAULT -> {
+                    handler.postDelayed(this, DELAY_STATE_MILLIS)
+                }
+                STATE_PREPARED -> {
+                    binding.btnPlay.isEnabled = true
+                    binding.btnPlay.setImageResource(R.drawable.ic_play)
+                }
+            }
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,30 +64,31 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
+
         val track = intent.serializable<Track>(PUT_EXTRA_TAG)
 
         if (track != null) {
             binding.artistName.text = track.artistName
             binding.trackName.text = track.trackName
-            binding.trackTime.text = FormatTrack.getTimeFromMillis(track.trackTimeMillis)
-            binding.playingTime.text = FormatTrack.DEFAULT_TIME_STRING
+            binding.trackTime.text = track.trackTime
+            binding.playingTime.text = DEFAULT_TIME_STRING
 
-            if (track.album.isNullOrEmpty()) {
-                binding.albumName.visibility = View.GONE
-                binding.album.visibility = View.GONE
+            if (track.album.isEmpty()) {
+                binding.albumName.isVisible = false
+                binding.album.isVisible = false
             } else {
-                binding.albumName.visibility = View.VISIBLE
-                binding.album.visibility = View.VISIBLE
+                binding.albumName.isVisible = true
+                binding.album.isVisible = true
                 binding.albumName.text = track.album
             }
 
-            if (track.releaseDate.isNullOrEmpty()) {
-                binding.yearName.visibility = View.GONE
-                binding.year.visibility = View.GONE
+            if (track.releaseDate.isEmpty()) {
+                binding.yearName.isVisible = false
+                binding.year.isVisible = false
             } else {
-                binding.yearName.visibility = View.VISIBLE
-                binding.year.visibility = View.VISIBLE
-                binding.yearName.text = FormatTrack.getYearFromReleaseDate(track.releaseDate)
+                binding.yearName.isVisible = true
+                binding.year.isVisible = true
+                binding.yearName.text = track.releaseDate
             }
 
             binding.genreName.text = track.genre
@@ -77,7 +97,7 @@ class PlayerActivity : AppCompatActivity() {
             val roundedCorner = 8f  // величина скругления углов картинки в dp
 
             Glide.with(this)
-                .load(FormatTrack.getCoverArtwork(track.artworkUrl100))
+                .load(track.coverArtworkUrl512)
                 .placeholder(R.drawable.track_placeholder_big)
                 .fitCenter()
                 .transform(
@@ -91,66 +111,47 @@ class PlayerActivity : AppCompatActivity() {
                 )
                 .into(binding.poster)
 
-            if (!track.previewUrl.isNullOrEmpty()) {
-                preparePlayer(track.previewUrl)
+            if (track.previewUrl.isNotEmpty()) {
+                playerInteractor.preparePlayer(track.previewUrl)
+                handler.post(getStateRunnable)
+
                 binding.btnPlay.setOnClickListener {
-                    playbackControl()
+                    playerInteractor.playbackControl()
+                    playerState = playerInteractor.getState()
+                    when (playerState) {
+                        STATE_PLAYING -> {
+                            binding.btnPlay.setImageResource(R.drawable.ic_pause)
+                            handler.post(timerRunnable)
+                            handler.post(getStateRunnable)
+                        }
+                        STATE_PAUSED -> {
+                            pause()
+                        }
+                    }
                 }
             }
         }
 
     }
 
+    private fun pause() {
+        binding.btnPlay.setImageResource(R.drawable.ic_play)
+        handler.removeCallbacks(getStateRunnable)
+        handler.removeCallbacks(timerRunnable)
+    }
+
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        playerInteractor.pausePlayer()
+        pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(timerRunnable)
-        mediaPlayer.release()
+        pause()
+        playerInteractor.release()
     }
 
-    private fun preparePlayer(previewUrl: String) {
-        mediaPlayer.setDataSource(previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.btnPlay.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            binding.btnPlay.setImageResource(R.drawable.ic_play)
-            playerState = STATE_PREPARED
-        }
-    }
-
-    private fun startPlayer() {
-        mediaPlayer.start()
-        binding.btnPlay.setImageResource(R.drawable.ic_pause)
-        playerState = STATE_PLAYING
-        handler.removeCallbacks(timerRunnable)
-        handler.post(timerRunnable)
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        binding.btnPlay.setImageResource(R.drawable.ic_play)
-        playerState = STATE_PAUSED
-        handler.removeCallbacks(timerRunnable)
-    }
-
-    private fun playbackControl() {
-        when (playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
 
     // получаем объект из другой активити используя нужную функцию десериализации в зависимости от версии ОС
     private inline fun <reified T : Serializable> Intent.serializable(key: String): T? = when {
@@ -168,7 +169,16 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val DELAY_MILLIS = 300L
+        private const val DELAY_STATE_MILLIS = 200L
         private const val PUT_EXTRA_TAG = "track"
+        private const val DEFAULT_TIME_STRING = "00:00"
+
+        fun show(context: Context, track: Track) {
+            val intent = Intent(context, PlayerActivity::class.java)
+            intent.putExtra(PUT_EXTRA_TAG, track)
+
+            context.startActivity(intent)
+        }
     }
 
 }
