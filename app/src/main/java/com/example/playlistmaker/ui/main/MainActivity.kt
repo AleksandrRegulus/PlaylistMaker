@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.util.Creator
 import com.example.playlistmaker.databinding.ActivityMainBinding
+import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.ui.media.MediaActivity
-import com.example.playlistmaker.ui.search.SearchActivity
+import com.example.playlistmaker.ui.search.activity.SearchActivity
 import com.example.playlistmaker.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
