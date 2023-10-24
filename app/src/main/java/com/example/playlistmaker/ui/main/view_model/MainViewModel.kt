@@ -15,12 +15,10 @@ class MainViewModel(
     private fun renderState(state: MainState) {
         _stateLiveData.value = state
     }
-
     fun getTheme() {
-        val darkTheme = getThemeUseCase.execute()
-
-        if (darkTheme) renderState(MainState.DarkTheme)
-        else renderState(MainState.LightTheme)
+        renderState(
+            MainState(getThemeUseCase.execute())
+        )
     }
 
 }

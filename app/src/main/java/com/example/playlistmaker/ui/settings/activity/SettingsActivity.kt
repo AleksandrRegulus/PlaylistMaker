@@ -25,6 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
         binding.btnBack.setOnClickListener {
             finish()
         }
@@ -69,19 +70,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         viewModel.getTheme()
+
     }
 
     private fun render(state: SettingsState) {
+        if (binding.switchNightMode.isChecked != state.darkTheme)
+            binding.switchNightMode.isChecked = state.darkTheme
         val app = (applicationContext as App)
-
-        when (state) {
-            is SettingsState.DarkTheme -> app.darkTheme = true
-            is SettingsState.LightTheme -> app.darkTheme = false
-        }
-
-        binding.switchNightMode.isChecked = app.darkTheme
-
-        app.switchTheme(app.darkTheme)
+        app.switchTheme(state.darkTheme)
     }
 
 }

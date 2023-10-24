@@ -22,6 +22,10 @@ class App : Application() {
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
+        if (darkTheme == darkThemeEnabled) {
+            return
+        }
+
         darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {

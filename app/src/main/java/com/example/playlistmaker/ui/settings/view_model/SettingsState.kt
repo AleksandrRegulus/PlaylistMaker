@@ -1,7 +1,10 @@
 package com.example.playlistmaker.ui.settings.view_model
 
 
-interface SettingsState {
-    object DarkTheme: SettingsState
-    object LightTheme: SettingsState
-}
+data class SettingsState(val darkTheme: Boolean)
+
+
+// interface SettingsState {
+//    object DarkTheme: SettingsState
+//    object LightTheme: SettingsState
+//}

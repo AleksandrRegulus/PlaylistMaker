@@ -19,17 +19,14 @@ class SettingsViewModel(
     }
 
     fun getTheme() {
-        changeTheme(getThemeUseCase.execute())
+        renderState(
+            SettingsState(getThemeUseCase.execute())
+        )
     }
 
     fun saveTheme(darkTheme: Boolean) {
         saveThemeUseCase.execute(darkTheme)
-        changeTheme(darkTheme)
-    }
-
-    private fun changeTheme(darkTheme: Boolean) {
-        if (darkTheme) renderState(SettingsState.DarkTheme)
-        else renderState(SettingsState.LightTheme)
+        renderState(SettingsState(darkTheme))
     }
 
 }

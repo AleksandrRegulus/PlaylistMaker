@@ -43,15 +43,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.getTheme()
+
     }
 
     private fun render(state: MainState) {
         val app = (applicationContext as App)
-        when (state) {
-            is MainState.DarkTheme -> app.darkTheme = true
-            is MainState.LightTheme -> app.darkTheme = false
-        }
-        app.switchTheme(app.darkTheme)
+        app.switchTheme(state.darkTheme)
     }
 
 }
