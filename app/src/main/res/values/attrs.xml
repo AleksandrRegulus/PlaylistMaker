@@ -2,4 +2,5 @@
 <resources>
     <attr name="color_player_btn" format="reference" />
     <attr name="color_btn_play" format="reference" />
+    <attr name="color_edit_text_elements" format="reference" />
 </resources>

@@ -57,6 +57,7 @@
         <item name="colorPrimaryVariant">@color/black</item> <!-- для стрелочки и фона кнопок-->
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/grey</item>
+        <item name="color_edit_text_elements">@color/grey</item>
     </style>
 
     <style name="ArtistTextView" parent="Widget.MaterialComponents.TextView">
