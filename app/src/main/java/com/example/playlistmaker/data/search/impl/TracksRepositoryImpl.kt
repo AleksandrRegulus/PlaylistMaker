@@ -9,6 +9,7 @@ import com.example.playlistmaker.data.search.TracksRepository
 import com.example.playlistmaker.util.Resource
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+
     override fun searchTracks(expression: String): Resource<List<Track>> {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
         return when (response.resultCode) {

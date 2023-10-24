@@ -8,7 +8,7 @@ object FormatTrack {
     fun getTimeFromMillis(trackTimeMillis: String): String {
         val trackTimeInMilliseconds = trackTimeMillis.toLongOrNull()
         return if (trackTimeInMilliseconds != null) {
-            DateTimeUtil.millisToTimeFormat(trackTimeInMilliseconds)
+            DateTimeUtil.formatMillisToTime(trackTimeInMilliseconds)
         } else R.string.default_time.toString()
     }
 

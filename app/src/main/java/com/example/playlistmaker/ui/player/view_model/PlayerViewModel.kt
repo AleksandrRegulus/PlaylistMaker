@@ -6,10 +6,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.util.DateTimeUtil.millisToTimeFormat
+import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
 
 class PlayerViewModel(previewUrl: String) : ViewModel() {
 
@@ -20,7 +17,7 @@ class PlayerViewModel(previewUrl: String) : ViewModel() {
         override fun run() {
             renderState(
                 PlayerState.Playing(
-                    millisToTimeFormat(mediaPlayer.currentPosition.toLong())
+                    formatMillisToTime(mediaPlayer.currentPosition.toLong())
                 )
             )
             handler.postDelayed(this, DELAY_MILLIS)
@@ -84,12 +81,6 @@ class PlayerViewModel(previewUrl: String) : ViewModel() {
 
     companion object {
         private const val DELAY_MILLIS = 300L
-
-        fun factory(previewUrl: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(previewUrl)
-            }
-        }
     }
 
 }
