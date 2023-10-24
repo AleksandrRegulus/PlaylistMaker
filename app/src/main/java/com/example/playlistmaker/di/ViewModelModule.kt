@@ -1,5 +1,8 @@
 package com.example.playlistmaker.di
 
+import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import com.example.playlistmaker.ui.main.view_model.MainViewModel
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchTracksViewModel
@@ -9,12 +12,20 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
+    factory {
+        MediaPlayer()
+    }
+
+    single {
+        Handler(Looper.getMainLooper())
+    }
+
     viewModel {
-        SearchTracksViewModel(get(), get(), get())
+        SearchTracksViewModel(get(), get(), get(), get())
     }
 
     viewModel { (previewUrl: String) ->
-        PlayerViewModel(previewUrl)
+        PlayerViewModel(previewUrl, get(), get())
     }
 
     viewModel {
@@ -22,6 +33,6 @@ val viewModelModule = module {
     }
 
     viewModel {
-        SettingsViewModel(get(),get())
+        SettingsViewModel(get(), get())
     }
 }
