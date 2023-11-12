@@ -1,29 +1,22 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.app.Application
 import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.util.Creator
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.search.TracksInteractor
+import com.example.playlistmaker.domain.search.impl.GetSearchHistoryUseCase
+import com.example.playlistmaker.domain.search.impl.SaveSearchHistoryUseCase
 import com.example.playlistmaker.domain.search.model.Track
 
-class SearchTracksViewModel(application: Application) : AndroidViewModel(application) {
+class SearchTracksViewModel(
+    private val searchTracksInteractor: TracksInteractor,
+    private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
+    private val saveSearchHistoryUseCase: SaveSearchHistoryUseCase,
+    private val handler: Handler
+) : ViewModel() {
 
-    private val searchTracksInteractor =
-        Creator.provideTracksInteractor(getApplication<Application>())
-    private val getSearchHistoryUseCase =
-        Creator.provideGetSearchHistoryUseCase(getApplication<Application>())
-    private val saveSearchHistoryUseCase =
-        Creator.provideSaveSearchHistoryUseCase(getApplication<Application>())
-
-    private val handler = Handler(Looper.getMainLooper())
     private var latestSearchText: String? = null
 
     private val tracks = ArrayList<Track>()
@@ -135,14 +128,6 @@ class SearchTracksViewModel(application: Application) : AndroidViewModel(applica
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
         private const val MAX_TRACKS_IN_HISTORY = 10
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
-                SearchTracksViewModel(application)
-            }
-        }
     }
 
 }

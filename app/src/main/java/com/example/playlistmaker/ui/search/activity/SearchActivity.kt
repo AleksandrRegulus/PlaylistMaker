@@ -10,13 +10,13 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.ui.search.view_model.SearchTracksState
 import com.example.playlistmaker.ui.search.view_model.SearchTracksViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -26,7 +26,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     private val handler = Handler(Looper.getMainLooper())
 
-    private lateinit var viewModel: SearchTracksViewModel
+    private val viewModel: SearchTracksViewModel by viewModel()
 
     private var textWatcher: TextWatcher? = null
 
@@ -46,12 +46,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchTracksViewModel.getViewModelFactory()
-        )[SearchTracksViewModel::class.java]
 
         binding.recyclerView.adapter = adapter
 

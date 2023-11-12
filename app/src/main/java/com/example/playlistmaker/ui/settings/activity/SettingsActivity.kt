@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.settings
+package com.example.playlistmaker.ui.settings.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,13 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.util.Creator
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.ui.settings.view_model.SettingsState
+import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val saveThemeUseCase = Creator.provideSaveThemeToSharedPrefsUseCase(this)
     private lateinit var binding: ActivitySettingsBinding
+
+    private val viewModel: SettingsViewModel by viewModel()
 
     @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val app = (applicationContext as App)
-        if (app.darkTheme) binding.switchNightMode.isChecked = true
+
 
         binding.btnBack.setOnClickListener {
             finish()
@@ -60,11 +62,22 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.switchNightMode.setOnCheckedChangeListener { switcher, checked ->
-            app.darkTheme = checked
-            saveThemeUseCase.execute(checked)
-            app.switchTheme(checked)
+            viewModel.saveTheme(checked)
         }
 
+        viewModel.stateLiveData.observe(this) {
+            render(it)
+        }
+
+        viewModel.getTheme()
+
+    }
+
+    private fun render(state: SettingsState) {
+        if (binding.switchNightMode.isChecked != state.darkTheme)
+            binding.switchNightMode.isChecked = state.darkTheme
+        val app = (applicationContext as App)
+        app.switchTheme(state.darkTheme)
     }
 
 }

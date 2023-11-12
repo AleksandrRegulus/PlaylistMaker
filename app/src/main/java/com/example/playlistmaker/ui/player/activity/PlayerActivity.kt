@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -15,12 +14,18 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.ui.player.view_model.PlayerState
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.io.Serializable
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+
+    private var previewUrl: String = ""
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(previewUrl)
+}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,10 +83,8 @@ class PlayerActivity : AppCompatActivity() {
                 .into(binding.poster)
 
             if (track.previewUrl.isNotEmpty()) {
-                viewModel = ViewModelProvider(
-                    this,
-                    PlayerViewModel.factory(track.previewUrl)
-                )[PlayerViewModel::class.java]
+
+                previewUrl = track.previewUrl
 
                 viewModel.stateLiveData.observe(this) {
                     render(it)

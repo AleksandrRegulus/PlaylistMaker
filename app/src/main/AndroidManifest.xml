@@ -22,18 +22,18 @@
             android:exported="false"
             android:theme="@style/SearchTheme.Theme.PlaylistMaker"/>
         <activity
-            android:name=".ui.media.MediaActivity"
+            android:name=".ui.media.activity.MediaActivity"
             android:exported="false" />
         <activity
             android:name=".ui.player.activity.PlayerActivity"
             android:exported="false"
             android:theme="@style/PlayerTheme.Theme.PlaylistMaker"/>
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.settings.activity.SettingsActivity"
             android:exported="false"
             android:theme="@style/SettingsTheme.Theme.PlaylistMaker"/>
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.main.activity.MainActivity"
             android:exported="true"
             android:theme="@style/MainTheme.Theme.PlaylistMaker">
             <intent-filter>
