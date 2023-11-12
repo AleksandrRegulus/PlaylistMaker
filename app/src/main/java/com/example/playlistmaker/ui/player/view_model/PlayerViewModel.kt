@@ -2,6 +2,7 @@ package com.example.playlistmaker.ui.player.view_model
 
 import android.media.MediaPlayer
 import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +11,9 @@ import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
 class PlayerViewModel(
     previewUrl: String,
     private val mediaPlayer: MediaPlayer,
-    private val handler: Handler,
 ) : ViewModel() {
+
+    private val handler = Handler(Looper.getMainLooper())
 
     private val timerRunnable = object : Runnable {
         override fun run() {

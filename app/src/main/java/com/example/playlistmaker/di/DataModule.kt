@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.example.playlistmaker.data.search.network.ItunesApi
 import com.example.playlistmaker.data.search.network.NetworkClient
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
@@ -18,8 +20,10 @@ val dataModule = module {
             .create(ItunesApi::class.java)
     }
 
-
     single<NetworkClient> {
-        RetrofitNetworkClient(androidContext(), get())
+        RetrofitNetworkClient(
+            androidContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            get()
+        )
     }
 }

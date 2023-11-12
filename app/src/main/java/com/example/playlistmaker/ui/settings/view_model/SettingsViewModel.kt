@@ -9,24 +9,18 @@ import com.example.playlistmaker.domain.settings.impl.SaveThemeUseCase
 class SettingsViewModel(
     private val saveThemeUseCase: SaveThemeUseCase,
     private val getThemeUseCase: GetThemeUseCase,
-): ViewModel() {
+) : ViewModel() {
 
     private val _stateLiveData = MutableLiveData<SettingsState>()
     val stateLiveData: LiveData<SettingsState> = _stateLiveData
 
-    private fun renderState(state: SettingsState) {
-        _stateLiveData.value = state
-    }
-
     fun getTheme() {
-        renderState(
-            SettingsState(getThemeUseCase.execute())
-        )
+        _stateLiveData.value = SettingsState(getThemeUseCase.execute())
     }
 
     fun saveTheme(darkTheme: Boolean) {
         saveThemeUseCase.execute(darkTheme)
-        renderState(SettingsState(darkTheme))
+        _stateLiveData.value = SettingsState(darkTheme)
     }
 
 }

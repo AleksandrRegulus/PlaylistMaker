@@ -21,7 +21,20 @@
     <style name="SettingsTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
         <item name="android:background">@color/white</item>
         <item name="android:textColor">@color/black</item>
+    </style>
 
+    <style name="MediaTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MediaTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextColor">@color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="MediaLinearLayout">
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="PlayerTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
@@ -31,7 +44,6 @@
         <item name="color_btn_play">@color/black</item>
 
     </style>
-
 
 
     <style name="SettingsButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">

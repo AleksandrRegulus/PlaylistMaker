@@ -4,6 +4,8 @@
     <string name="media">Медиатека</string>
     <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="write_support">Написать в поддержку</string>
@@ -23,4 +25,7 @@
     <string name="album">Альбом</string>
     <string name="duration">Длительность</string>
     <string name="default_time">00:00</string>
+    <string name="favorite_track_empty">Ваша медиатека пуста</string>
+    <string name="no_playlist">Вы не создали\nни одного плейлиста</string>
+    <string name="new_playlist">Новый плейлист</string>
 </resources>
