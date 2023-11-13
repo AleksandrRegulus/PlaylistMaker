@@ -23,7 +23,8 @@
             android:theme="@style/SearchTheme.Theme.PlaylistMaker"/>
         <activity
             android:name=".ui.media.activity.MediaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/MediaTheme.Theme.PlaylistMaker"/>
         <activity
             android:name=".ui.player.activity.PlayerActivity"
             android:exported="false"

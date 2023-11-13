@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.search.view_model
 
 import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +15,6 @@ class SearchTracksViewModel(
     private val searchTracksInteractor: TracksInteractor,
     private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
     private val saveSearchHistoryUseCase: SaveSearchHistoryUseCase,
-    private val handler: Handler
 ) : ViewModel() {
 
     private var latestSearchText: String? = null
@@ -25,6 +25,7 @@ class SearchTracksViewModel(
     private val _stateLiveData = MutableLiveData<SearchTracksState>()
     val stateLiveData: LiveData<SearchTracksState> = _stateLiveData
 
+    private val handler = Handler(Looper.getMainLooper())
 
     private fun renderState(state: SearchTracksState) {
         _stateLiveData.postValue(state)

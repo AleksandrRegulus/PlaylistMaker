@@ -1,13 +1,12 @@
 package com.example.playlistmaker.data.search.network
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.example.playlistmaker.data.search.dto.Response
 import com.example.playlistmaker.data.search.dto.TrackSearchRequest
 
 class RetrofitNetworkClient(
-    private val context: Context,
+    private val connectivityManager: ConnectivityManager,
     private val itunesService: ItunesApi
 ): NetworkClient {
 
@@ -26,8 +25,6 @@ class RetrofitNetworkClient(
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             when {
