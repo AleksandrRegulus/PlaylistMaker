@@ -83,6 +83,10 @@ class SearchTracksViewModel(
         }
     }
 
+    fun cancelSearch() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+    }
+
     fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(SearchTracksState.Loading)

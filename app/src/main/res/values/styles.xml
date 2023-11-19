@@ -37,8 +37,23 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
-    <style name="MediaTabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+    <style name="MediaTabLayoutTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="textAllCaps">false</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceInactive">@style/TextStyleBNV</item>
+        <item name="itemTextAppearanceActive">@style/TextStyleBNV</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="TextStyleBNV" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="textAllCaps">false</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
     </style>
 </resources>

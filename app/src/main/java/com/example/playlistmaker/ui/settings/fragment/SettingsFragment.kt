@@ -1,34 +1,34 @@
-package com.example.playlistmaker.ui.settings.activity
+package com.example.playlistmaker.ui.settings.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.databinding.FragmentSettingsBinding
 import com.example.playlistmaker.ui.settings.view_model.SettingsState
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
+import com.example.playlistmaker.util.BindingFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySettingsBinding
+class SettingsFragment: BindingFragment<FragmentSettingsBinding>() {
 
     private val viewModel: SettingsViewModel by viewModel()
 
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSettingsBinding {
+        return FragmentSettingsBinding.inflate(inflater, container, false)
+    }
+
     @SuppressLint("IntentReset")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.btnShareApp.setOnClickListener {
             Intent().apply {
@@ -65,18 +65,16 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.saveTheme(checked)
         }
 
-        viewModel.stateLiveData.observe(this) {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             render(it)
         }
-
-        viewModel.getTheme()
 
     }
 
     private fun render(state: SettingsState) {
         if (binding.switchNightMode.isChecked != state.darkTheme)
             binding.switchNightMode.isChecked = state.darkTheme
-        val app = (applicationContext as App)
+        val app = (requireActivity().applicationContext as App)
         app.switchTheme(state.darkTheme)
     }
 

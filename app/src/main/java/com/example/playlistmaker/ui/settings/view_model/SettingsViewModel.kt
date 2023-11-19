@@ -14,7 +14,7 @@ class SettingsViewModel(
     private val _stateLiveData = MutableLiveData<SettingsState>()
     val stateLiveData: LiveData<SettingsState> = _stateLiveData
 
-    fun getTheme() {
+    init {
         _stateLiveData.value = SettingsState(getThemeUseCase.execute())
     }
 

@@ -5,20 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.settings.impl.GetThemeUseCase
 
-class MainViewModel(
+class HostViewModel(
     private val getThemeUseCase: GetThemeUseCase
 ) : ViewModel() {
 
     private val _stateLiveData = MutableLiveData<MainState>()
     val stateLiveData: LiveData<MainState> = _stateLiveData
 
-    private fun renderState(state: MainState) {
-        _stateLiveData.value = state
-    }
-    fun getTheme() {
-        renderState(
-            MainState(getThemeUseCase.execute())
-        )
+    init {
+        _stateLiveData.postValue(MainState(getThemeUseCase.execute()))
     }
 
 }
