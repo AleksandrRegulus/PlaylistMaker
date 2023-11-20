@@ -10,12 +10,11 @@ import android.view.ViewGroup
 import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSettingsBinding
-import com.example.playlistmaker.ui.settings.view_model.SettingsState
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
 import com.example.playlistmaker.util.BindingFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsFragment: BindingFragment<FragmentSettingsBinding>() {
+class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     private val viewModel: SettingsViewModel by viewModel()
 
@@ -52,7 +51,6 @@ class SettingsFragment: BindingFragment<FragmentSettingsBinding>() {
             }
         }
 
-
         binding.btnLicenseAgreement.setOnClickListener {
             Intent().apply {
                 action = Intent.ACTION_VIEW
@@ -61,21 +59,14 @@ class SettingsFragment: BindingFragment<FragmentSettingsBinding>() {
             }
         }
 
+        binding.switchNightMode.isChecked = (requireContext().applicationContext as App).darkTheme
+
         binding.switchNightMode.setOnCheckedChangeListener { switcher, checked ->
             viewModel.saveTheme(checked)
         }
 
         viewModel.stateLiveData.observe(viewLifecycleOwner) {
-            render(it)
+            (requireContext().applicationContext as App).switchTheme(it.darkTheme)
         }
-
     }
-
-    private fun render(state: SettingsState) {
-        if (binding.switchNightMode.isChecked != state.darkTheme)
-            binding.switchNightMode.isChecked = state.darkTheme
-        val app = (requireActivity().applicationContext as App)
-        app.switchTheme(state.darkTheme)
-    }
-
 }

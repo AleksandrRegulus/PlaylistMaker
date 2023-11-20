@@ -20,16 +20,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/ys_display_regular"
         android:maxLines="1"
         android:textFontWeight="500"
         android:textSize="@dimen/text_size_middle"
+        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintEnd_toStartOf="@id/arrowForward"
         app:layout_constraintStart_toEndOf="@id/poster"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/artistName"
         tools:text="Название трекаНазвание трекаНазвание трека" />
 
 
@@ -47,6 +48,7 @@
         app:layout_constraintEnd_toStartOf="@id/icDot"
         app:layout_constraintStart_toStartOf="@id/trackName"
         app:layout_constraintTop_toBottomOf="@id/trackName"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="The beatles" />
 
     <ImageView

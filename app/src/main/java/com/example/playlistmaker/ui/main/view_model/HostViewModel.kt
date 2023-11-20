@@ -9,11 +9,11 @@ class HostViewModel(
     private val getThemeUseCase: GetThemeUseCase
 ) : ViewModel() {
 
-    private val _stateLiveData = MutableLiveData<MainState>()
-    val stateLiveData: LiveData<MainState> = _stateLiveData
+    private val _stateLiveData = MutableLiveData<Boolean>()
+    val stateLiveData: LiveData<Boolean> = _stateLiveData
 
     init {
-        _stateLiveData.postValue(MainState(getThemeUseCase.execute()))
+        _stateLiveData.postValue(getThemeUseCase.execute())
     }
 
 }

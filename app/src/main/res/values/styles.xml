@@ -45,14 +45,20 @@
     </style>
 
     <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemTextAppearanceInactive">@style/TextStyleBNV</item>
-        <item name="itemTextAppearanceActive">@style/TextStyleBNV</item>
+        <item name="itemTextAppearanceInactive">@style/TextStyleBNV.Inactive</item>
+        <item name="itemTextAppearanceActive">@style/TextStyleBNV.Active</item>
+        <item name="itemTextAppearanceActiveBoldEnabled">false</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
 
-    <style name="TextStyleBNV" parent="TextAppearance.MaterialComponents.Caption">
+    <style name="TextStyleBNV.Inactive" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="textAllCaps">false</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="TextStyleBNV.Active" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
     </style>
