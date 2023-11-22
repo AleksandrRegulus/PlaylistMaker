@@ -1,29 +1,32 @@
-package com.example.playlistmaker.ui.search.activity
+package com.example.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.ui.search.view_model.SearchTracksState
 import com.example.playlistmaker.ui.search.view_model.SearchTracksViewModel
+import com.example.playlistmaker.util.BindingFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private var searchText = ""
     private var isClickAllowed = true
 
-    private lateinit var binding: ActivitySearchBinding
     private val handler = Handler(Looper.getMainLooper())
 
     private val viewModel: SearchTracksViewModel by viewModel()
@@ -35,26 +38,28 @@ class SearchActivity : AppCompatActivity() {
             override fun onItemClick(track: Track) {
                 if (clickDebounce()) {
                     viewModel.saveToHistory(track)
-                    PlayerActivity.show(this@SearchActivity, track)
+
+                    PlayerActivity.show(requireContext(), track)
                 }
             }
         }
     )
 
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(inflater, container, false)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.adapter = adapter
 
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
         binding.btnClear.setOnClickListener {
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
 
             binding.searchEditText.setText("")
@@ -87,17 +92,17 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchText = binding.searchEditText.text.toString()
-
                 // если строка не пустая, показываем кнопку иначе прячем
                 binding.btnClear.isVisible = !s.isNullOrEmpty()
 
                 // если пользователь очистил поисковый запрос очищаем результат поиска
-                if (s?.isEmpty() == true) {
+                if (s?.isEmpty() == true && searchText.isNotEmpty()) {
                     viewModel.getHitsoryTracks()
                 } else viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
                 )  //запускаем автопоиск
+
+                searchText = binding.searchEditText.text.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -111,9 +116,15 @@ class SearchActivity : AppCompatActivity() {
             if (hasFocus && binding.searchEditText.text.isEmpty()) viewModel.getHitsoryTracks()
         }
 
-        viewModel.stateLiveData.observe(this) {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             render(it)
         }
+    }
+
+    override fun onDestroyView() {
+        textWatcher?.let { binding.searchEditText.removeTextChangedListener(it) }
+        viewModel.cancelSearch()
+        super.onDestroyView()
     }
 
     private fun render(state: SearchTracksState) {
