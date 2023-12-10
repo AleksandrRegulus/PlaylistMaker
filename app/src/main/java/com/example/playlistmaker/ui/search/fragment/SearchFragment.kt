@@ -107,7 +107,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         textWatcher?.let { binding.searchEditText.addTextChangedListener(it) }
 
         // обрабатываем состояние фокуса строки поиска
-        binding.searchEditText.setOnFocusChangeListener { view, hasFocus ->
+        binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
             val searchText = binding.searchEditText.text.toString()
             if (hasFocus && searchText.isEmpty()) viewModel.searchDebounce(searchText)
         }
