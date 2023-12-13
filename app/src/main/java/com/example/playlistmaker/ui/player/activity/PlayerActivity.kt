@@ -106,26 +106,34 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun render(state: PlayerState) {
         when (state) {
+            is PlayerState.Default -> showDefault()
             is PlayerState.Prepared -> showPrepared()
-            is PlayerState.Paused -> showPause()
+            is PlayerState.Paused -> showPause(state.currentPosition)
             is PlayerState.Playing -> showPlaying(state.currentPosition)
         }
+    }
+
+    private fun showDefault() {
+        binding.btnPlay.isEnabled = false
+        binding.btnPlay.setImageResource(R.drawable.ic_play)
+        binding.playingTime.text = getString(R.string.default_time)
+    }
+
+    private fun showPrepared() {
+        binding.btnPlay.isEnabled = true
+        binding.btnPlay.setImageResource(R.drawable.ic_play)
+        binding.playingTime.text = getString(R.string.default_time)
+    }
+
+    private fun showPause(currentPosition: String) {
+        binding.btnPlay.setImageResource(R.drawable.ic_play)
+        binding.playingTime.text = currentPosition
     }
 
     private fun showPlaying(currentPosition: String) {
         binding.btnPlay.setImageResource(R.drawable.ic_pause)
         binding.playingTime.text = currentPosition
     }
-
-    private fun showPrepared() {
-        binding.btnPlay.isEnabled = true
-        binding.btnPlay.setImageResource(R.drawable.ic_play)
-    }
-
-    private fun showPause() {
-        binding.btnPlay.setImageResource(R.drawable.ic_play)
-    }
-
 
     // получаем объект из другой активити используя нужную функцию десериализации в зависимости от версии ОС
     private inline fun <reified T : Serializable> Intent.serializable(key: String): T? = when {

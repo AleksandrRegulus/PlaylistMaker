@@ -1,36 +1,32 @@
 package com.example.playlistmaker.ui.player.view_model
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     previewUrl: String,
     private val mediaPlayer: MediaPlayer,
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var timerJob: Job? = null
 
-    private val timerRunnable = object : Runnable {
-        override fun run() {
-            renderState(
-                PlayerState.Playing(
-                    formatMillisToTime(mediaPlayer.currentPosition.toLong())
-                )
-            )
-            handler.postDelayed(this, DELAY_MILLIS)
-        }
-    }
-
-    private val _stateLiveData = MutableLiveData<PlayerState>()
+    private val _stateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
     val stateLiveData: LiveData<PlayerState> = _stateLiveData
 
     init {
         preparePlayer(previewUrl)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        releasePlayer()
     }
 
     private fun renderState(state: PlayerState) {
@@ -46,20 +42,36 @@ class PlayerViewModel(
         }
 
         mediaPlayer.setOnCompletionListener {
-            handler.removeCallbacks(timerRunnable)
+            timerJob?.cancel()
             renderState(PlayerState.Prepared)
         }
     }
 
     private fun startPlayer() {
         mediaPlayer.start()
-        handler.post(timerRunnable)
+        renderState(PlayerState.Playing(formatMillisToTime(mediaPlayer.currentPosition.toLong())))
+        startTimer()
+    }
+
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(DELAY_MILLIS)
+                renderState(PlayerState.Playing(formatMillisToTime(mediaPlayer.currentPosition.toLong())))
+            }
+        }
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-        handler.removeCallbacks(timerRunnable)
-        renderState(PlayerState.Paused)
+        timerJob?.cancel()
+        renderState(PlayerState.Paused(formatMillisToTime(mediaPlayer.currentPosition.toLong())))
+    }
+
+    private fun releasePlayer() {
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        renderState(PlayerState.Default)
     }
 
     fun playbackControl() {
@@ -68,17 +80,12 @@ class PlayerViewModel(
                 pausePlayer()
             }
 
-            is PlayerState.Prepared, PlayerState.Paused -> {
+            is PlayerState.Prepared, is PlayerState.Paused -> {
                 startPlayer()
             }
 
             else -> {}
         }
-    }
-
-    override fun onCleared() {
-        handler.removeCallbacks(timerRunnable)
-        mediaPlayer.release()
     }
 
     companion object {
