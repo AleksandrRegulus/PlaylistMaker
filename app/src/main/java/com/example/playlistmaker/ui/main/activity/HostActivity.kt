@@ -1,7 +1,8 @@
 package com.example.playlistmaker.ui.main.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
@@ -22,19 +23,33 @@ class HostActivity : AppCompatActivity() {
         binding = ActivityHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
-        viewModel.stateLiveData.observe(this) {isDarkTheme ->
-            val app = (applicationContext as App)
-            if (!app.isThemeSelected) {
-                app.switchTheme(isDarkTheme)
-                app.isThemeSelected = true
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.playerFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
             }
         }
+
+        viewModel.darkTheme.observe(this) { isDarkTheme ->
+            (applicationContext as App).switchTheme(isDarkTheme)
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        viewModel.setWindowFocus(hasFocus)
     }
 
 

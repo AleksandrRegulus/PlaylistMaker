@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface TracksInteractor {
 
-    fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>>
+    fun searchTracks(expression: String): Flow<SearchResult>
 
 }

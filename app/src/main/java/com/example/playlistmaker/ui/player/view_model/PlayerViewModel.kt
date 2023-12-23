@@ -5,45 +5,63 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.db.FavoriteInteractor
+import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    previewUrl: String,
     private val mediaPlayer: MediaPlayer,
+    private val favoriteInteractor: FavoriteInteractor,
 ) : ViewModel() {
 
     private var timerJob: Job? = null
+    private var latestPreviewUrl = ""
 
     private val _stateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
     val stateLiveData: LiveData<PlayerState> = _stateLiveData
 
-    init {
-        preparePlayer(previewUrl)
+    override fun onCleared() {
+        releasePlayer()
+        super.onCleared()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        releasePlayer()
+    fun onFavoriteClicked(track: Track) {
+        if (track.isFavorite) {
+            viewModelScope.launch {
+                favoriteInteractor.addTrackToFav(track)
+            }
+        } else {
+            viewModelScope.launch {
+                favoriteInteractor.deleteTrackFromFav(track.trackId)
+            }
+        }
     }
 
     private fun renderState(state: PlayerState) {
-        _stateLiveData.value = state
+        _stateLiveData.postValue(state)
     }
 
-    private fun preparePlayer(previewUrl: String) {
-        mediaPlayer.setDataSource(previewUrl)
-        mediaPlayer.prepareAsync()
+    fun preparePlayer(previewUrl: String) {
+        if (latestPreviewUrl != previewUrl) {
+            latestPreviewUrl = previewUrl
+            try {
+                mediaPlayer.setDataSource(previewUrl)
+                mediaPlayer.prepareAsync()
 
-        mediaPlayer.setOnPreparedListener {
-            renderState(PlayerState.Prepared)
-        }
+                mediaPlayer.setOnPreparedListener {
+                    renderState(PlayerState.Prepared)
+                }
 
-        mediaPlayer.setOnCompletionListener {
-            timerJob?.cancel()
-            renderState(PlayerState.Prepared)
+                mediaPlayer.setOnCompletionListener {
+                    timerJob?.cancel()
+                    renderState(PlayerState.Prepared)
+                }
+            } catch (e: Throwable) {
+                renderState(PlayerState.Default)
+            }
         }
     }
 

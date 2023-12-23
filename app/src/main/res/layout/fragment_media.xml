@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/MediaTheme.Theme.PlaylistMaker"
-    tools:context="com.example.playlistmaker.ui.media.fragment.MediaFragment">
+    tools:context="com.example.playlistmaker.ui.media.MediaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
