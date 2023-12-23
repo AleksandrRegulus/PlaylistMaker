@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.search.SearchResult
 import com.example.playlistmaker.domain.search.TracksInteractor
 import com.example.playlistmaker.domain.search.impl.GetSearchHistoryUseCase
 import com.example.playlistmaker.domain.search.impl.SaveSearchHistoryUseCase
@@ -23,7 +24,6 @@ class SearchTracksViewModel(
             search(changedText)
         }
 
-    private val tracks = ArrayList<Track>()
     private val historyTracks = ArrayList<Track>()
 
     private val _stateLiveData = MutableLiveData<SearchTracksState>()
@@ -33,17 +33,26 @@ class SearchTracksViewModel(
         _stateLiveData.postValue(state)
     }
 
-    private fun getHitsoryTracks() {
-        renderState(SearchTracksState.Loading)
-        historyTracks.clear()
-        historyTracks.addAll(getSearchHistoryUseCase.execute())
-        renderState(
-            SearchTracksState.HistoryContent(historyTracks)
-        )
+    fun actualTrackList() {
+        when (_stateLiveData.value) {
+            is SearchTracksState.HistoryContent -> getHistoryTracks()
+            is SearchTracksState.NetworkContent -> latestSearchText?.let { search(it) }
+            else -> {}
+        }
+    }
+
+    private fun getHistoryTracks() {
+        viewModelScope.launch {
+            getSearchHistoryUseCase.execute().collect{ result ->
+                historyTracks.clear()
+                historyTracks.addAll(result)
+                renderState(SearchTracksState.HistoryContent(historyTracks))
+            }
+        }
     }
 
     fun saveToHistory(track: Track) {
-        val position = historyTracks.indexOf(track)
+        val position = historyTracks.indexOfFirst { it.trackId == track.trackId }
         if (position == -1) {
             if (historyTracks.size == MAX_TRACKS_IN_HISTORY) historyTracks.removeLast()
         } else {
@@ -51,9 +60,6 @@ class SearchTracksViewModel(
         }
         historyTracks.add(0, element = track)
         saveSearchHistoryUseCase.execute(historyTracks)
-
-        if (_stateLiveData.value is SearchTracksState.HistoryContent)
-            _stateLiveData.value = SearchTracksState.HistoryContent(historyTracks)
     }
 
     fun clearHistory() {
@@ -68,39 +74,41 @@ class SearchTracksViewModel(
         if (latestSearchText != changedText || _stateLiveData.value is SearchTracksState.Error) {
             latestSearchText = changedText
             trackSearchDebounce(changedText)
-            if (changedText.isEmpty()) getHitsoryTracks()
+            if (changedText.isEmpty()) getHistoryTracks()
         }
     }
 
-    fun search(newSearchText: String) {
+    private fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(SearchTracksState.Loading)
 
             viewModelScope.launch {
                 searchTracksInteractor
                     .searchTracks(expression = newSearchText)
-                    .collect { pair ->
-                        val (foundTracks, errorMessage) = pair
+                    .collect { result ->
+                        when (result) {
+                            is SearchResult.Data -> {
+                                val tracks = ArrayList<Track>()
 
-                        if (foundTracks != null) {
-                            tracks.clear()
-                            tracks.addAll(foundTracks)
-                        }
-                        when {
-                            errorMessage != null -> {
+                                if (result.tracks != null) {
+                                    tracks.addAll(result.tracks)
+                                }
+                                when {
+                                    tracks.isEmpty() -> {
+                                        renderState(SearchTracksState.Empty)
+                                    }
+
+                                    else -> {
+                                        renderState(SearchTracksState.NetworkContent(tracks))
+                                    }
+                                }
+                            }
+
+                            is SearchResult.Error -> {
                                 renderState(SearchTracksState.Error)
-                            }
-
-                            tracks.isEmpty() -> {
-                                renderState(SearchTracksState.Empty)
-                            }
-
-                            else -> {
-                                renderState(SearchTracksState.NetworkContent(tracks))
                             }
                         }
                     }
-
             }
         }
     }

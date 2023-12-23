@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSettingsBinding
-import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
+import com.example.playlistmaker.ui.main.view_model.HostViewModel
 import com.example.playlistmaker.util.BindingFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
-    private val viewModel: SettingsViewModel by viewModel()
+    private val hostViewModel by activityViewModel<HostViewModel>()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -59,14 +58,13 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
             }
         }
 
-        binding.switchNightMode.isChecked = (requireContext().applicationContext as App).darkTheme
-
-        binding.switchNightMode.setOnCheckedChangeListener { switcher, checked ->
-            viewModel.saveTheme(checked)
+        binding.switchNightMode.setOnCheckedChangeListener { _, checked ->
+             hostViewModel.saveTheme(checked)
         }
 
-        viewModel.stateLiveData.observe(viewLifecycleOwner) {
-            (requireContext().applicationContext as App).switchTheme(it.darkTheme)
+        hostViewModel.darkTheme.observe(viewLifecycleOwner) {checked ->
+            binding.switchNightMode.isChecked = checked
         }
+
     }
 }

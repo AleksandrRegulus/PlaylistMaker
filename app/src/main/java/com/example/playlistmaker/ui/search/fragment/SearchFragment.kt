@@ -12,31 +12,47 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.example.playlistmaker.ui.player.activity.PlayerActivity
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.search.model.Track
+import com.example.playlistmaker.ui.main.view_model.HostViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchTracksState
 import com.example.playlistmaker.ui.search.view_model.SearchTracksViewModel
 import com.example.playlistmaker.util.BindingFragment
-import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private val viewModel: SearchTracksViewModel by viewModel()
+    private val hostViewModel by activityViewModel<HostViewModel>()
 
     private var textWatcher: TextWatcher? = null
 
-    private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private var isClickAllowed = true
 
     private val adapter = TracksAdapter(
         object : TracksAdapter.OnItemClickListener {
-            override fun onItemClick(track: Track) {
-                onTrackClickDebounce(track)
+            override fun onItemClick(track: Track, position: Int) {
+                if (isClickAllowed) {
+                    isClickAllowed = false
+                    lifecycleScope.launch {
+                        delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                        isClickAllowed = true
+                    }
+
+                    viewModel.saveToHistory(track)
+
+                    hostViewModel.setTrack(track)
+                    findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
+                }
             }
         }
     )
+
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -45,18 +61,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        onTrackClickDebounce = debounce<Track>(
-            CLICK_DEBOUNCE_DELAY_MILLIS,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { track ->
-            viewModel.saveToHistory(track)
-            PlayerActivity.show(requireContext(), track)
-        }
 
         binding.recyclerView.adapter = adapter
 
@@ -68,7 +74,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             binding.searchEditText.setText("")
         }
 
-        // кнопка Обновить при проблемах со связью
         binding.btnRenewPlaceholder.setOnClickListener {
             viewModel.searchDebounce(binding.searchEditText.text.toString())
         }
@@ -88,14 +93,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             false
         }
 
-        // обрабатываем изменение текста в строке поиска
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // если строка не пустая, показываем кнопку иначе прячем
                 binding.btnClear.isVisible = !s.isNullOrEmpty()
                 viewModel.searchDebounce(changedText = s?.toString() ?: "")
             }
@@ -115,6 +118,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) {
             render(it)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.actualTrackList()
+
     }
 
     override fun onDestroyView() {
@@ -154,7 +163,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.errorPlaceholder.isVisible = true
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun showTracks(tracks: List<Track>) {
         binding.errorPlaceholder.isVisible = false
         binding.progressBar.isVisible = false
@@ -162,12 +170,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.btnClearHistory.isVisible = false
         binding.searchResult.isVisible = true
 
-        adapter.tracks.clear()
-        adapter.tracks.addAll(tracks)
-        adapter.notifyDataSetChanged()
+        updateItems(tracks)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun showHistoryTracks(tracks: List<Track>) {
         binding.errorPlaceholder.isVisible = false
         binding.progressBar.isVisible = false
@@ -182,6 +187,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         binding.searchResult.isVisible = true
 
+        updateItems(tracks)
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateItems(tracks: List<Track>) {
         adapter.tracks.clear()
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()

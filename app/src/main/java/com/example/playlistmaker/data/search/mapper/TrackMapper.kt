@@ -5,7 +5,7 @@ import com.example.playlistmaker.domain.search.model.Track
 
 object TrackMapper {
 
-    fun map(track: TrackDto): Track {
+    fun map(track: TrackDto, isFavorite: Boolean): Track {
         return Track(
             trackId = track.trackId,
             trackName = track.trackName,
@@ -18,6 +18,7 @@ object TrackMapper {
             genre = track.genre ?: "",
             country = track.country ?: "",
             previewUrl = track.previewUrl ?: "",
+            isFavorite = isFavorite
         )
     }
 }

@@ -14,7 +14,7 @@
         android:layout_marginTop="106dp"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/placeholder_error_size"
@@ -31,6 +31,25 @@
             android:textAlignment="center"
             android:textFontWeight="400"
             android:textSize="19sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/favorite_tracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/medium_padding"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/track_item" />
+
     </LinearLayout>
 
 </FrameLayout>
