@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.player.activity
+package com.example.playlistmaker.ui.player.fragment
 
 import android.os.Bundle
 import android.util.TypedValue
