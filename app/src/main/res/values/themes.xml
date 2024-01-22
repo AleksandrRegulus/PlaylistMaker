@@ -6,15 +6,22 @@
         <item name="colorPrimary">@color/white</item>      <!--системная часть экрана-->
         <item name="colorPrimaryVariant">@color/white
         </item>      <!-- для стрелочки и фона кнопок-->
+
         <item name="colorOnPrimary">@color/black</item>   <!--текст кнопок-->
         <item name="android:colorControlActivated">@color/blue
         </item>  <!-- switch активирован всегда синий-->
         <item name="hintTextColor">@color/grey</item>
         <!-- Secondary brand color. -->
+        <item name="colorAccent">@color/blue</item>
 
     </style>
 
-    <style name="MainTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
+    <style name="DarkTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
+
+    </style>
+
+    <style name="Theme.MyApp.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/blue</item>
     </style>
 
     <style name="SettingsTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
@@ -24,6 +31,11 @@
 
     <style name="MediaTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="NewPlaylistTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
+        <item name="color_playlist_et_stroke">@color/grey</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="MediaTabLayout" parent="Widget.MaterialComponents.TabLayout">
@@ -37,7 +49,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="color_player_btn">@color/btn_player_light_grey</item>
         <item name="color_btn_play">@color/black</item>
-
+        <item name="color_view_on_bs">@color/light_grey</item>
     </style>
 
 
@@ -60,11 +72,11 @@
     <style name="SearchTheme.Theme.PlaylistMaker" parent="Main.Theme.PlaylistMaker">
         <item name="android:background">@color/white</item>
         <item name="android:editTextColor">@color/black</item>
-        <item name="android:editTextBackground">@drawable/rounded_edittext</item>
+        <item name="android:editTextBackground">@drawable/rounded_search_et</item>
         <item name="colorPrimaryVariant">@color/black</item> <!-- для стрелочки и фона кнопок-->
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/grey</item>
-        <item name="color_edit_text_elements">@color/grey</item>
+        <item name="color_et_elements">@color/grey</item>
     </style>
 
     <style name="ArtistTextView" parent="Widget.MaterialComponents.TextView">
@@ -74,7 +86,7 @@
         <item name="android:textColor">@color/grey</item>
     </style>
 
-    <style name="PlaceholderButton">
+    <style name="new_playlist_btn">
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/black</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>

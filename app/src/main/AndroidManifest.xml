@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:name="com.example.playlistmaker.ui.App"
@@ -21,7 +22,7 @@
             android:name=".ui.main.activity.HostActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/MainTheme.Theme.PlaylistMaker">
+            android:theme="@style/DarkTheme.Theme.PlaylistMaker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

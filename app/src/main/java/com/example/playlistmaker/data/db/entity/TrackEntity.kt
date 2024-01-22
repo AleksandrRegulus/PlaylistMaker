@@ -17,5 +17,5 @@ data class TrackEntity(
     val genre: String,
     val country: String,
     val previewUrl : String,
-    val timeToAddToFav: Long, //System.currentTimeMillis()
+    val timeToAdd: Long,
 )

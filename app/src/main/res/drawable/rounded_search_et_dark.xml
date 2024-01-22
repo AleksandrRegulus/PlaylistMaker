@@ -4,9 +4,9 @@
 
     <solid android:color="@color/white" />
     <corners
-        android:bottomRightRadius="@dimen/search_edittext_radius"
-        android:bottomLeftRadius="@dimen/search_edittext_radius"
-        android:topLeftRadius="@dimen/search_edittext_radius"
-        android:topRightRadius="@dimen/search_edittext_radius" />
+        android:bottomRightRadius="@dimen/middle_corner_radius"
+        android:bottomLeftRadius="@dimen/middle_corner_radius"
+        android:topLeftRadius="@dimen/middle_corner_radius"
+        android:topRightRadius="@dimen/middle_corner_radius" />
 <!--    <stroke android:width="1dip" android:color="#f06060" />-->
 </shape>

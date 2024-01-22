@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:theme="@style/MainTheme.Theme.PlaylistMaker"
+    tools:theme="@style/DarkTheme.Theme.PlaylistMaker"
     tools:context="com.example.playlistmaker.ui.main.activity.HostActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -38,7 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:menu="@menu/bottom_navigation_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

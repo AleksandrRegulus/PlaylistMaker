@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui
 
 import android.app.Application
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.interactorModule
@@ -11,10 +12,11 @@ import org.koin.core.context.startKoin
 
 class App : Application() {
 
-    var darkTheme = false
+    private var darkTheme = false
 
     override fun onCreate() {
         super.onCreate()
+
         startKoin {
             androidContext(this@App)
             modules(dataModule, repositoryModule, interactorModule, viewModelModule)
@@ -34,5 +36,9 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+    }
+
+    fun getRes(): Resources {
+        return resources
     }
 }

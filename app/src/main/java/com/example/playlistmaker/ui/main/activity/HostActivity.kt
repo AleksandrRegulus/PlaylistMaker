@@ -1,15 +1,14 @@
 package com.example.playlistmaker.ui.main.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityHostBinding
 import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.ui.main.view_model.HostViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HostActivity : AppCompatActivity() {
@@ -27,17 +26,18 @@ class HostActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerFragment -> {
-                    bottomNavigationView.visibility = View.GONE
+                R.id.playerFragment, R.id.newPlaylistFragment -> {
+                    binding.divider.isVisible = false
+                    binding.bottomNavigationView.isVisible = false
                 }
 
                 else -> {
-                    bottomNavigationView.visibility = View.VISIBLE
+                    binding.divider.isVisible = true
+                    binding.bottomNavigationView.isVisible = true
                 }
             }
         }
