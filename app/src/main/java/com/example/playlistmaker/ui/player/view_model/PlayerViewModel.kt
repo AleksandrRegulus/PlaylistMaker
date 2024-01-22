@@ -9,7 +9,6 @@ import com.example.playlistmaker.domain.db.FavoriteInteractor
 import com.example.playlistmaker.domain.db.PlaylistInteractor
 import com.example.playlistmaker.domain.playlist.model.Playlist
 import com.example.playlistmaker.domain.search.model.Track
-import com.example.playlistmaker.ui.media.playlist.view_model.PlaylistsState
 import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

@@ -2,7 +2,6 @@ package com.example.playlistmaker.data.converters
 
 import com.example.playlistmaker.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.domain.playlist.model.Playlist
-import com.example.playlistmaker.domain.search.model.Track
 import com.google.gson.Gson
 
 class PlaylistDbConverter() {

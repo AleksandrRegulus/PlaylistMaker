@@ -11,7 +11,6 @@ import com.example.playlistmaker.domain.search.impl.TracksInteractorImpl
 import com.example.playlistmaker.domain.settings.impl.GetThemeUseCase
 import com.example.playlistmaker.domain.settings.impl.SaveThemeUseCase
 import org.koin.dsl.module
-import kotlin.math.sin
 
 val interactorModule = module {
 

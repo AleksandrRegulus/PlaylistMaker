@@ -38,7 +38,4 @@ class App : Application() {
         )
     }
 
-    fun getRes(): Resources {
-        return resources
-    }
 }
