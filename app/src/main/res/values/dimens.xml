@@ -19,7 +19,6 @@
     <dimen name="icons_padding">10dp</dimen>
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="small_padding">12dp</dimen>
-<!--    <dimen name="small_margin">8dp</dimen>-->
 
     <dimen name="search_edittext_radius">8dp</dimen>
 
@@ -28,5 +27,8 @@
     <dimen name="placeholder_size">44dp</dimen>
 
     <dimen name="placeholder_error_size">120dp</dimen>
+
+    <dimen name="poster_rounded_corner">8</dimen>
+    <dimen name="small_poster_rounded_corner">2</dimen>
 
 </resources>

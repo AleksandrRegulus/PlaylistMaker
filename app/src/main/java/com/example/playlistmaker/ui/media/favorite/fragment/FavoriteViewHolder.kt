@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.fragment
+package com.example.playlistmaker.ui.media.favorite.fragment
 
 import android.util.TypedValue
 import android.view.View
@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.search.model.Track
 
-class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
+class FavoriteViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
@@ -37,7 +37,4 @@ class TracksViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
             )
             .into(poster)
     }
-
-
-
 }

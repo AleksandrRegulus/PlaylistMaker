@@ -12,7 +12,6 @@ import org.koin.core.context.startKoin
 class App : Application() {
 
     var darkTheme = false
-    var isThemeSelected = false
 
     override fun onCreate() {
         super.onCreate()
@@ -29,7 +28,7 @@ class App : Application() {
 
         darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
+            if (darkTheme) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
