@@ -82,7 +82,7 @@ class PlayerFragment : BindingFragment<FragmentPlayerBinding>() {
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+            override fun onSlide(bottomSheet: View, slideOffset: Float) { }
         })
 
         binding.btnAddToPlaylist.setOnClickListener {

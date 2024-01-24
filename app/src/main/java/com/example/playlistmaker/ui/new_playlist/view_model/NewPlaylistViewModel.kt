@@ -15,6 +15,13 @@ class NewPlaylistViewModel(
     private val _stateLiveData = MutableLiveData<NewPlaylistState>()
     val stateLiveData: LiveData<NewPlaylistState> = _stateLiveData
 
+    private val _posterLiveData = MutableLiveData("")
+    val posterLiveData: LiveData<String> = _posterLiveData
+
+    fun setPoster(uri: String) {
+        _posterLiveData.value = uri
+    }
+
     fun createNewPlaylist(playlist: Playlist) {
         viewModelScope.launch {
             val result = playlistInteractor.addPlaylist(playlist)

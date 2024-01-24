@@ -26,6 +26,7 @@
 
     <style name="NewPlaylistTheme.Theme.PlaylistMaker" parent="DarkTheme.Theme.PlaylistMaker">
         <item name="color_playlist_et_stroke">@color/white</item>
+        <item name="color_playlist_et_hint">@color/white</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@color/black</item>
     </style>
