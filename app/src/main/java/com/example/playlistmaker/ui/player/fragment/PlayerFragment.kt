@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.player.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -219,6 +220,7 @@ class PlayerFragment : BindingFragment<FragmentPlayerBinding>() {
         binding.playingTime.text = currentPosition
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun renderBottomSheet(stateBs: BsPlaylistsState) {
         when (stateBs) {
             is BsPlaylistsState.playlistsContent -> {

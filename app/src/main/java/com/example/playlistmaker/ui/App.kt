@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui
 
 import android.app.Application
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.interactorModule
