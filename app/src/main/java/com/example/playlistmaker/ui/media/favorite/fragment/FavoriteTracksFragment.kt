@@ -67,12 +67,12 @@ class FavoriteTracksFragment : BindingFragment<FragmentFavoriteTracksBinding>() 
 
     private fun render(state: FavoriteState) {
         when (state) {
-            is FavoriteState.Empty -> showEmpty()
+            is FavoriteState.Empty -> showPlaceholder()
             is FavoriteState.FavoriteContent -> showContent(state.tracks)
         }
     }
 
-    private fun showEmpty() {
+    private fun showPlaceholder() {
         binding.errorPlaceholder.isVisible = true
         binding.favoriteTracks.isVisible = false
     }

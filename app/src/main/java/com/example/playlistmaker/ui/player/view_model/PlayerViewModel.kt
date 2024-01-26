@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.db.FavoriteInteractor
+import com.example.playlistmaker.domain.db.PlaylistInteractor
+import com.example.playlistmaker.domain.playlist.model.Playlist
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
 import kotlinx.coroutines.Job
@@ -15,17 +17,46 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val mediaPlayer: MediaPlayer,
     private val favoriteInteractor: FavoriteInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null
     private var latestPreviewUrl = ""
+    private val playlists = ArrayList<Playlist>()
 
     private val _stateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
     val stateLiveData: LiveData<PlayerState> = _stateLiveData
 
+    private val _statePlaylistsLiveData = MutableLiveData<BsPlaylistsState>()
+    val statePlaylistsLiveData: LiveData<BsPlaylistsState> = _statePlaylistsLiveData
+
     override fun onCleared() {
         releasePlayer()
         super.onCleared()
+    }
+
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect { result ->
+                playlists.clear()
+                playlists.addAll(result)
+                _statePlaylistsLiveData.postValue(BsPlaylistsState.playlistsContent(result))
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(playlistPosition: Int, track: Track) {
+        val trackPosition =
+            playlists[playlistPosition].trackIDs.indexOfFirst { it == track.trackId.toString() }
+        if (trackPosition == -1) {
+            viewModelScope.launch {
+                if (playlistInteractor.addPlaylistsTrack(track, playlists[playlistPosition])) {
+                    _statePlaylistsLiveData.postValue(BsPlaylistsState.trackAdded(playlists[playlistPosition].playlistName))
+                }
+            }
+        } else {
+            _statePlaylistsLiveData.postValue(BsPlaylistsState.trackExists(playlists[playlistPosition].playlistName))
+        }
     }
 
     fun onFavoriteClicked(track: Track) {

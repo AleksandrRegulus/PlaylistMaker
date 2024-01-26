@@ -26,7 +26,8 @@ class SharedPrefsRepositoryImpl(
 
     override fun getSearchHistoryFromSharedPrefs(): Flow<List<Track>> = flow {
         val json = sharedPrefs.getString(SEARCH_HISTORY_KEY, null)
-        val historyTracks = gson.fromJson(json, Array<Track>::class.java).toList()
+        val historyTracks = if (json.isNullOrEmpty()) emptyList()
+            else gson.fromJson(json, Array<Track>::class.java).toList()
         val favTracks = appDatabase.favTrackDao().getFavTracksIDs()
         emit(historyTracks.map {
             it.copy(isFavorite = it.trackId in favTracks)

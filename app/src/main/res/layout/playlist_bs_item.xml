@@ -1,0 +1,55 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:paddingHorizontal="@dimen/small_padding">
+
+    <ImageView
+        android:id="@+id/poster_iv"
+        android:layout_width="@dimen/placeholder_size"
+        android:layout_height="@dimen/placeholder_size"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/track_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/playlist_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/ys_display_regular"
+        android:maxLines="1"
+        android:textFontWeight="500"
+        android:textSize="@dimen/text_size_middle"
+        app:layout_constraintBottom_toTopOf="@id/number_tracks_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/poster_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Любимые песни" />
+
+
+    <TextView
+        android:id="@+id/number_tracks_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/ys_display_regular"
+        android:maxLines="1"
+        android:textFontWeight="500"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/playlist_name_tv"
+        app:layout_constraintTop_toBottomOf="@id/playlist_name_tv"
+        tools:text="18 треков" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

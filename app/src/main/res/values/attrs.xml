@@ -2,5 +2,8 @@
 <resources>
     <attr name="color_player_btn" format="reference" />
     <attr name="color_btn_play" format="reference" />
-    <attr name="color_edit_text_elements" format="reference" />
+    <attr name="color_et_elements" format="reference" />
+    <attr name="color_playlist_et_stroke" format="reference" />
+    <attr name="color_playlist_et_hint" format="reference" />
+    <attr name="color_view_on_bs" format="reference" />
 </resources>

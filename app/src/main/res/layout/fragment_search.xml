@@ -107,7 +107,7 @@
 
         <Button
             android:id="@+id/btn_clear_history"
-            style="@style/PlaceholderButton"
+            style="@style/new_playlist_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -147,7 +147,7 @@
 
         <Button
             android:id="@+id/btn_renew_placeholder"
-            style="@style/PlaceholderButton"
+            style="@style/new_playlist_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

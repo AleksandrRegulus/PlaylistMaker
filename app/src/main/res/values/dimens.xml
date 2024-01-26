@@ -20,7 +20,9 @@
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="small_padding">12dp</dimen>
 
-    <dimen name="search_edittext_radius">8dp</dimen>
+    <dimen name="big_corner_radius">16dp</dimen>
+    <dimen name="middle_corner_radius">8dp</dimen>
+    <dimen name="small_corner_radius">4dp</dimen>
 
     <dimen name="button_clear_size">14dp</dimen>
 
@@ -28,7 +30,7 @@
 
     <dimen name="placeholder_error_size">120dp</dimen>
 
-    <dimen name="poster_rounded_corner">8</dimen>
+    <dimen name="poster_rounded_corner">40</dimen>
     <dimen name="small_poster_rounded_corner">2</dimen>
 
 </resources>
