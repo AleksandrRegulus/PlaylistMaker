@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.PlaylistItemBinding
 import com.example.playlistmaker.databinding.TrackItemBinding
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.util.DiffCallback

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.ui.search.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable

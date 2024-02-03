@@ -1,10 +1,6 @@
 package com.example.playlistmaker.ui.new_playlist.fragment
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -30,8 +26,6 @@ import com.example.playlistmaker.util.FileUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
 

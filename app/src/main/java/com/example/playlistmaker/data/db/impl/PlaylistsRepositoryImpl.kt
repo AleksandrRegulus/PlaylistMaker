@@ -1,6 +1,5 @@
 package com.example.playlistmaker.data.db.impl
 
-import android.util.Log
 import com.example.playlistmaker.data.converters.PlaylistDbConverter
 import com.example.playlistmaker.data.converters.PlaylistsTrackDbConverter
 import com.example.playlistmaker.data.db.AppDatabase

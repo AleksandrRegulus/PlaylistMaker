@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.db.PlaylistsInteractor
 import com.example.playlistmaker.domain.playlist.model.Playlist
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class EditPlaylistViewModel(
