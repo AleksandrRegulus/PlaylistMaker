@@ -14,6 +14,7 @@ import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.ui.main.view_model.HostViewModel
 import com.example.playlistmaker.ui.media.favorite.view_model.FavoriteState
 import com.example.playlistmaker.ui.media.favorite.view_model.FavoriteTracksViewModel
+import com.example.playlistmaker.ui.search.fragment.TracksAdapter
 import com.example.playlistmaker.util.BindingFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,9 +28,9 @@ class FavoriteTracksFragment : BindingFragment<FragmentFavoriteTracksBinding>() 
 
     private var isClickAllowed = true
 
-    private val adapter = FavoriteAdapter(
-        object : FavoriteAdapter.OnItemClickListener {
-            override fun onItemClick(track: Track) {
+    private val adapter = TracksAdapter(
+        object : TracksAdapter.OnItemClickListener {
+            override fun onItemClick(track: Track, position: Int) {
                 if (isClickAllowed) {
                     isClickAllowed = false
                     lifecycleScope.launch {
@@ -82,9 +83,7 @@ class FavoriteTracksFragment : BindingFragment<FragmentFavoriteTracksBinding>() 
         binding.errorPlaceholder.isVisible = false
         binding.favoriteTracks.isVisible = true
 
-        adapter.tracks.clear()
-        adapter.tracks.addAll(tracks)
-        adapter.notifyDataSetChanged()
+        adapter.setTracks(tracks)
     }
 
     companion object {

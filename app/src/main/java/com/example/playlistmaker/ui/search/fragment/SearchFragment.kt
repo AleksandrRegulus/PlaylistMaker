@@ -170,7 +170,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.btnClearHistory.isVisible = false
         binding.searchResult.isVisible = true
 
-        updateItems(tracks)
+        adapter.setTracks(tracks)
     }
 
     private fun showHistoryTracks(tracks: List<Track>) {
@@ -187,15 +187,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         binding.searchResult.isVisible = true
 
-        updateItems(tracks)
-    }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun updateItems(tracks: List<Track>) {
-        adapter.tracks.clear()
-        adapter.tracks.addAll(tracks)
-        adapter.notifyDataSetChanged()
+        adapter.setTracks(tracks)
     }
 
     private fun showLoading() {

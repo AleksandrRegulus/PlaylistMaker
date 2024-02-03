@@ -12,6 +12,7 @@ data class PlaylistsTrackEntity(
     val album: String,
     val releaseDate: String,
     val trackTime: String,
+    val trackTimeMillis: Long,
     val coverArtworkUrl100: String,
     val coverArtworkUrl512: String,
     val genre: String,

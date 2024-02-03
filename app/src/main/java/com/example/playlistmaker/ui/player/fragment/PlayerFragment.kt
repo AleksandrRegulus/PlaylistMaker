@@ -224,9 +224,7 @@ class PlayerFragment : BindingFragment<FragmentPlayerBinding>() {
     private fun renderBottomSheet(stateBs: BsPlaylistsState) {
         when (stateBs) {
             is BsPlaylistsState.playlistsContent -> {
-                adapter.playlists.clear()
-                adapter.playlists.addAll(stateBs.playlists)
-                adapter.notifyDataSetChanged()
+                adapter.setPlaylists(stateBs.playlists)
             }
 
             is BsPlaylistsState.trackAdded -> {

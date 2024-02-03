@@ -26,20 +26,21 @@ import com.example.playlistmaker.ui.App
 import com.example.playlistmaker.ui.new_playlist.view_model.NewPlaylistState
 import com.example.playlistmaker.ui.new_playlist.view_model.NewPlaylistViewModel
 import com.example.playlistmaker.util.BindingFragment
+import com.example.playlistmaker.util.FileUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
+open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
 
-    private val viewModel: NewPlaylistViewModel by viewModel()
+    open val viewModel: NewPlaylistViewModel by viewModel()
 
     private var textWatcherPlaylistName: TextWatcher? = null
     private var textWatcherPlaylistDescription: TextWatcher? = null
 
-    private var posterUri = ""
+    open  var posterUri = ""
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -101,7 +102,7 @@ class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
         binding.createPlaylistBtn.setOnClickListener {
 
             val savedFileUri =
-                if (posterUri != "") saveImageToPrivateStorage(posterUri.toUri())
+                if (posterUri != "") FileUtil.saveImageToPrivateStorage(requireActivity(), posterUri.toUri())
                 else ""
 
             viewModel.createNewPlaylist(
@@ -212,24 +213,4 @@ class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
         } else findNavController().navigateUp()
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri): String {
-        val filePath = File(
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            PRIVATE_STORAGE_FOLDER_NAME
-        )
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val file = File(filePath, "${System.currentTimeMillis()}.jpg")
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-        return file.toString()
-    }
-
-    companion object {
-        private const val PRIVATE_STORAGE_FOLDER_NAME = "playlists_poster"
-    }
 }

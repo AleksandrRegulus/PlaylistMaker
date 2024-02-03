@@ -1,14 +1,14 @@
-package com.example.playlistmaker.ui.player.fragment
+package com.example.playlistmaker.ui.media.playlists.fragment
 
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.PlaylistBsItemBinding
+import com.example.playlistmaker.databinding.PlaylistItemBinding
 import com.example.playlistmaker.domain.playlist.model.Playlist
 import com.example.playlistmaker.util.StringUtil
 
-class BsPlaylistsViewHolder(private val itemBinding: PlaylistBsItemBinding) :
+class PlaylistsViewHolder(private val itemBinding: PlaylistItemBinding) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
     fun bind(playlist: Playlist) {
@@ -30,4 +30,5 @@ class BsPlaylistsViewHolder(private val itemBinding: PlaylistBsItemBinding) :
                 )
         }
     }
+
 }
