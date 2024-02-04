@@ -17,6 +17,7 @@ import com.example.playlistmaker.databinding.FragmentPlaylistBinding
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.ui.main.view_model.HostViewModel
 import com.example.playlistmaker.ui.new_playlist.fragment.EditPlaylistFragment
+import com.example.playlistmaker.ui.playlist.view_model.PlaylistState
 import com.example.playlistmaker.ui.playlist.view_model.PlaylistViewModel
 import com.example.playlistmaker.ui.search.fragment.TracksAdapter
 import com.example.playlistmaker.util.BindingFragment
@@ -127,7 +128,12 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistBinding>() {
             binding.overlay2.isVisible = true
             val confirmDialog =
                 MaterialAlertDialogBuilder(requireContext(), R.style.Theme_MyApp_Dialog_Alert)
-                    .setMessage(getString(R.string.delete_playlist_message, viewModel.playlistLiveData.value?.playlist?.playlistName))
+                    .setMessage(
+                        getString(
+                            R.string.delete_playlist_message,
+                            viewModel.playlistLiveData.value?.playlist?.playlistName
+                        )
+                    )
                     .setNegativeButton(getString(R.string.no)) { dialog, which ->
                         binding.overlay2.isVisible = false
                     }
@@ -145,28 +151,31 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistBinding>() {
         }
 
         viewModel.playlistLiveData.observe(viewLifecycleOwner) { state ->
-            with(binding) {
-
-                setPoster(state.playlist.posterUri, posterIv)
-                playlistNameTv.text = state.playlist.playlistName
-                playlistDescriptionTv.text = state.playlist.playlistDescription
-                numTracksTv.text = state.numTracks
-                tracksDurationTv.text = state.tracksDuration
-
-                bsPlaylistNameTv.text = state.playlist.playlistName
-                bsNumberTracksTv.text = state.numTracks
-
-                if (state.playlist.posterUri.isNotEmpty())
-                    setPoster(state.playlist.posterUri, bsPosterIv)
-
-                adapter.setTracks(state.tracks)
-
-                binding.errorPlaceholder.isVisible = state.tracks.isEmpty()
-            }
+            renderPlaylistInfo(state)
         }
 
         viewModel.playlistDeleted.observe(viewLifecycleOwner) {
             if (it) findNavController().navigateUp()
+        }
+    }
+
+    private fun renderPlaylistInfo(state: PlaylistState) {
+        with(binding) {
+            setPoster(state.playlist.posterUri, posterIv)
+            playlistNameTv.text = state.playlist.playlistName
+            playlistDescriptionTv.text = state.playlist.playlistDescription
+            numTracksTv.text = state.numTracks
+            tracksDurationTv.text = state.tracksDuration
+
+            bsPlaylistNameTv.text = state.playlist.playlistName
+            bsNumberTracksTv.text = state.numTracks
+
+            if (state.playlist.posterUri.isNotEmpty())
+                setPoster(state.playlist.posterUri, bsPosterIv)
+
+            adapter.setTracks(state.tracks)
+
+            binding.errorPlaceholder.isVisible = state.tracks.isEmpty()
         }
     }
 

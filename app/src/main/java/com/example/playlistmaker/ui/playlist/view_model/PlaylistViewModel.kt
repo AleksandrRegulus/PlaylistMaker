@@ -63,10 +63,7 @@ class PlaylistViewModel(
     }
 
     private fun getTracksDurationSum(tracksList: List<Track>): String {
-        var durationSum: Long = 0
-        tracksList.forEach {
-            durationSum += it.trackTimeMillis
-        }
+        val durationSum: Long =  tracksList.sumOf {it.trackTimeMillis }
 
         val minutes = DateTimeUtil.formatMillisToMinutes(durationSum)
 

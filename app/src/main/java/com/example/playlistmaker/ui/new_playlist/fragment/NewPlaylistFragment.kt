@@ -72,7 +72,9 @@ open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 setTextInputLayoutStyle(s, binding.namePlaylistTil)
-                binding.createPlaylistBtn.isEnabled = !s.isNullOrEmpty()
+                if (s != null) {
+                    binding.createPlaylistBtn.isEnabled = s.trim().isNotEmpty()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
