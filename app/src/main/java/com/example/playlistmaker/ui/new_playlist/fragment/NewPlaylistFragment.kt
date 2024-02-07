@@ -3,6 +3,7 @@ package com.example.playlistmaker.ui.new_playlist.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,7 @@ open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
     private var textWatcherPlaylistName: TextWatcher? = null
     private var textWatcherPlaylistDescription: TextWatcher? = null
 
-    open  var posterUri = ""
+    open var posterUri = ""
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -57,7 +58,6 @@ open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                //обрабатываем событие выбора пользователем фотографии
                 if (uri != null) {
                     viewModel.setPoster(uri.toString())
                 }
@@ -72,9 +72,7 @@ open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 setTextInputLayoutStyle(s, binding.namePlaylistTil)
-                if (s != null) {
-                    binding.createPlaylistBtn.isEnabled = s.trim().isNotEmpty()
-                }
+                binding.createPlaylistBtn.isEnabled = !s?.trim().isNullOrEmpty()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -98,7 +96,10 @@ open class NewPlaylistFragment : BindingFragment<FragmentNewPlaylistBinding>() {
         binding.createPlaylistBtn.setOnClickListener {
 
             val savedFileUri =
-                if (posterUri != "") FileUtil.saveImageToPrivateStorage(requireActivity(), posterUri.toUri())
+                if (posterUri != "") FileUtil.saveImageToPrivateStorage(
+                    requireActivity(),
+                    posterUri.toUri()
+                )
                 else ""
 
             viewModel.createNewPlaylist(
