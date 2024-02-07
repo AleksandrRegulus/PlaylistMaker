@@ -12,22 +12,22 @@ class BsPlaylistsViewHolder(private val itemBinding: PlaylistBsItemBinding) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
     fun bind(playlist: Playlist) {
+        with(itemBinding) {
+            if (playlist.posterUri == "") {
+                posterIv.scaleType = ImageView.ScaleType.CENTER
+                posterIv.setImageResource(R.drawable.playlist_placeholder)
+            } else {
+                posterIv.scaleType = ImageView.ScaleType.CENTER_CROP
+                posterIv.setImageURI(playlist.posterUri.toUri())
+            }
 
-        if (playlist.posterUri == "") {
-            itemBinding.posterIv.scaleType = ImageView.ScaleType.CENTER
-            itemBinding.posterIv.setImageResource(R.drawable.playlist_placeholder)
-        } else {
-            itemBinding.posterIv.scaleType = ImageView.ScaleType.CENTER_CROP
-            itemBinding.posterIv.setImageURI(playlist.posterUri.toUri())
+            playlistNameTv.text = playlist.playlistName
+            numberTracksTv.text = itemView.context
+                .getString(
+                    R.string.playlist_num_tracks,
+                    playlist.numberOfTracks,
+                    StringUtil.getNumTracksString(playlist.numberOfTracks)
+                )
         }
-
-        itemBinding.playlistNameTv.text = playlist.playlistName
-
-        itemBinding.numberTracksTv.text = itemView.context
-            .getString(
-                R.string.playlist_num_tracks,
-                playlist.numberOfTracks,
-                StringUtil.getNumTracksString(playlist.numberOfTracks)
-            )
     }
 }

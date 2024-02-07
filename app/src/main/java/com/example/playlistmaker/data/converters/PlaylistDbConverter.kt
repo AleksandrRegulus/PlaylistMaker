@@ -27,7 +27,7 @@ class PlaylistDbConverter() {
                 playlistDescription = playlistDescription,
                 posterUri = posterUri,
                 trackIDs = if (trackIDs.isNotEmpty())
-                    gson.fromJson(trackIDs, Array<String>::class.java).toList()
+                    gson.fromJson(trackIDs, Array<Int>::class.java).toList()
                 else emptyList(),
                 numberOfTracks = numberOfTracks
             )

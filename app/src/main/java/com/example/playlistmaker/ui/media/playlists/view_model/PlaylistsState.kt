@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.media.playlist.view_model
+package com.example.playlistmaker.ui.media.playlists.view_model
 
 import com.example.playlistmaker.domain.playlist.model.Playlist
 

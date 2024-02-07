@@ -6,19 +6,22 @@ import com.example.playlistmaker.domain.search.model.Track
 object TrackMapper {
 
     fun map(track: TrackDto, isFavorite: Boolean): Track {
-        return Track(
-            trackId = track.trackId,
-            trackName = track.trackName,
-            artistName = track.artistName,
-            album = track.album ?: "",
-            releaseDate = FormatTrack.getYearFromReleaseDate(track.releaseDate),
-            trackTime = FormatTrack.getTimeFromMillis(track.trackTimeMillis),
-            coverArtworkUrl100 = track.artworkUrl100 ?: "",
-            coverArtworkUrl512 = FormatTrack.getCoverArtwork(track.artworkUrl100),
-            genre = track.genre ?: "",
-            country = track.country ?: "",
-            previewUrl = track.previewUrl ?: "",
-            isFavorite = isFavorite
-        )
+        return with(track) {
+            Track(
+                trackId = trackId,
+                trackName = trackName,
+                artistName = artistName,
+                album = album ?: "",
+                releaseDate = FormatTrack.getYearFromReleaseDate(releaseDate),
+                trackTime = FormatTrack.getTimeFromMillis(trackTimeMillis),
+                trackTimeMillis = trackTimeMillis.toLongOrNull() ?: 0,
+                coverArtworkUrl100 = artworkUrl100 ?: "",
+                coverArtworkUrl512 = FormatTrack.getCoverArtwork(artworkUrl100),
+                genre = genre ?: "",
+                country = country ?: "",
+                previewUrl = previewUrl ?: "",
+                isFavorite = isFavorite
+            )
+        }
     }
 }

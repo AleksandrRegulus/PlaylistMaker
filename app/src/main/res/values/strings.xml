@@ -33,13 +33,30 @@
     <string name="description_playlist">Описание</string>
     <string name="create_playlist">Создать</string>
 
+    <string name="save">Сохранить</string>
+    <string name="edit">Редактировать</string>
+
     <string name="confirm_playlist_title">Завершить создание плейлиста?</string>
     <string name="confirm_playlist_message">Все несохраненные данные будут потеряны</string>
     <string name="confirm_playlist_finish">Завершить</string>
     <string name="confirm_playlist_cancel">Отмена</string>
     <string name="create_playlist_done">Плейлист %1$s создан</string>
     <string name="create_playlist_error">Плейлист с именем %1$s уже существует</string>
+    <string name="playlist_is_empty">В этом плейлисте нет списка треков, которым можно поделиться</string>
     <string name="track_added_to_playlist">Добавлено в плейлист %1$s</string>
     <string name="track_exists_in_playlist">Трек уже добавлен в плейлист  %1$s</string>
     <string name="playlist_num_tracks">%1$d %2$s</string>
+
+    <string name="delete_track_from_playlist_message">Хотите удалить трек?</string>
+    <string name="delete_track_from_playlist_title">Удалить трек</string>
+    <string name="delete_track_from_playlist_confirm">Удалить</string>
+
+    <string name="share">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+
+    <string name="delete_playlist_message">Хотите удалить плейлист "%1$s"?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
 </resources>

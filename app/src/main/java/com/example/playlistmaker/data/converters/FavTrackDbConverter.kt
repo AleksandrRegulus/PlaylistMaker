@@ -6,36 +6,42 @@ import com.example.playlistmaker.domain.search.model.Track
 class FavTrackDbConverter {
 
     fun map(track: Track): TrackEntity {
-        return TrackEntity(
-            trackId = track.trackId,
-            trackName = track.trackName,
-            artistName = track.artistName,
-            album = track.album,
-            releaseDate = track.releaseDate,
-            trackTime = track.trackTime,
-            coverArtworkUrl100 = track.coverArtworkUrl100,
-            coverArtworkUrl512 = track.coverArtworkUrl512,
-            genre = track.genre,
-            country = track.country,
-            previewUrl = track.previewUrl,
-            timeToAdd = System.currentTimeMillis()
-        )
+        return with(track) {
+            TrackEntity(
+                trackId = trackId,
+                trackName = trackName,
+                artistName = artistName,
+                album = album,
+                releaseDate = releaseDate,
+                trackTime = trackTime,
+                trackTimeMillis = trackTimeMillis,
+                coverArtworkUrl100 = coverArtworkUrl100,
+                coverArtworkUrl512 = coverArtworkUrl512,
+                genre = genre,
+                country = country,
+                previewUrl = previewUrl,
+                timeToAdd = System.currentTimeMillis()
+            )
+        }
     }
 
     fun map(track: TrackEntity): Track{
-        return Track(
-            trackId = track.trackId,
-            trackName = track.trackName,
-            artistName = track.artistName,
-            album = track.album,
-            releaseDate = track.releaseDate,
-            trackTime = track.trackTime,
-            coverArtworkUrl100 = track.coverArtworkUrl100,
-            coverArtworkUrl512 = track.coverArtworkUrl512,
-            genre = track.genre,
-            country = track.country,
-            previewUrl = track.previewUrl,
-            isFavorite = true
-        )
+        return with(track) {
+            Track(
+                trackId = trackId,
+                trackName = trackName,
+                artistName = artistName,
+                album = album,
+                releaseDate = releaseDate,
+                trackTime = trackTime,
+                trackTimeMillis = trackTimeMillis,
+                coverArtworkUrl100 = coverArtworkUrl100,
+                coverArtworkUrl512 = coverArtworkUrl512,
+                genre = genre,
+                country = country,
+                previewUrl = previewUrl,
+                isFavorite = true
+            )
+        }
     }
 }

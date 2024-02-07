@@ -49,7 +49,7 @@
             android:layout_height="@dimen/buttons_height"
 
             android:text="@string/share_app"
-            app:icon="@drawable/share_app" />
+            app:icon="@drawable/ic_share_app" />
 
         <Button
             android:id="@+id/btn_send_to_support"

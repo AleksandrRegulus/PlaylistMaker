@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.db.FavoriteInteractor
-import com.example.playlistmaker.domain.db.PlaylistInteractor
+import com.example.playlistmaker.domain.db.PlaylistsInteractor
 import com.example.playlistmaker.domain.playlist.model.Playlist
 import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.util.DateTimeUtil.formatMillisToTime
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val mediaPlayer: MediaPlayer,
     private val favoriteInteractor: FavoriteInteractor,
-    private val playlistInteractor: PlaylistInteractor
+    private val playlistsInteractor: PlaylistsInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -37,7 +37,7 @@ class PlayerViewModel(
 
     fun getPlaylists() {
         viewModelScope.launch {
-            playlistInteractor.getPlaylists().collect { result ->
+            playlistsInteractor.getPlaylists().collect { result ->
                 playlists.clear()
                 playlists.addAll(result)
                 _statePlaylistsLiveData.postValue(BsPlaylistsState.playlistsContent(result))
@@ -47,10 +47,10 @@ class PlayerViewModel(
 
     fun addTrackToPlaylist(playlistPosition: Int, track: Track) {
         val trackPosition =
-            playlists[playlistPosition].trackIDs.indexOfFirst { it == track.trackId.toString() }
+            playlists[playlistPosition].trackIDs.indexOfFirst { it == track.trackId }
         if (trackPosition == -1) {
             viewModelScope.launch {
-                if (playlistInteractor.addPlaylistsTrack(track, playlists[playlistPosition])) {
+                if (playlistsInteractor.addPlaylistsTrack(track, playlists[playlistPosition])) {
                     _statePlaylistsLiveData.postValue(BsPlaylistsState.trackAdded(playlists[playlistPosition].playlistName))
                 }
             }

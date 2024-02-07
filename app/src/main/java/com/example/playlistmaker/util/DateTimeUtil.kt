@@ -11,4 +11,11 @@ object DateTimeUtil {
             Locale.getDefault()
         ).format(millis)
     }
+
+    fun formatMillisToMinutes(millis: Long): String {
+        return SimpleDateFormat(
+            "mm",
+            Locale.getDefault()
+        ).format(millis)
+    }
 }
