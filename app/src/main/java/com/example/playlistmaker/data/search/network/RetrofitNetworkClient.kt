@@ -2,6 +2,7 @@ package com.example.playlistmaker.data.search.network
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import com.example.playlistmaker.data.search.dto.Response
 import com.example.playlistmaker.data.search.dto.TrackSearchRequest
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ class RetrofitNetworkClient(
                     val response = itunesService.searchTracks((dto).expression)
                     response.apply { resultCode = 200 }
                 } catch (e: Throwable) {
+                    Log.d("TAGERROR", e.message.orEmpty() )
                     Response().apply { resultCode = 500 }
                 }
             }

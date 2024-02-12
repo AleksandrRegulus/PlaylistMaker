@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -79,6 +80,14 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.doOnNextLayout {
+            BottomSheetBehavior.from(binding.playlistBs).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+                peekHeight = (binding.root.height - binding.shareBtn.bottom -
+                        resources.getDimensionPixelSize(R.dimen.margin_top_playlist_bs))
+            }
+        }
 
         val menuBsBehavior = BottomSheetBehavior.from(binding.menuBs).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -224,6 +233,9 @@ class PlaylistFragment : BindingFragment<FragmentPlaylistBinding>() {
     }
 
     override fun onResume() {
+        BottomSheetBehavior.from(binding.menuBs).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
         viewModel.getPlaylist(requireArguments().getInt(ARGS_PLAYLIST_ID))
         super.onResume()
     }

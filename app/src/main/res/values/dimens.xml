@@ -33,4 +33,6 @@
     <dimen name="poster_rounded_corner">40</dimen>
     <dimen name="small_poster_rounded_corner">2</dimen>
 
+    <dimen name="margin_top_playlist_bs">24dp</dimen>
+
 </resources>
