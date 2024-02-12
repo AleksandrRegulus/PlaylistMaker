@@ -1,5 +1,6 @@
 package com.example.playlistmaker.domain.search.impl
 
+import android.util.Log
 import com.example.playlistmaker.domain.search.SearchResult
 import com.example.playlistmaker.domain.search.TracksInteractor
 import com.example.playlistmaker.domain.search.TracksRepository
